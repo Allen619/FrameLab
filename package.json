@@ -1,0 +1,34 @@
+{
+  "name": "docs-site",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "学习文档整合站点 - 前端、后端、AI",
+  "scripts": {
+    "dev": "vitepress dev docs",
+    "build": "vitepress build docs",
+    "preview": "vitepress preview docs",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "devDependencies": {
+    "vitepress": "^1.6.4",
+    "mermaid": "^11.12.1",
+    "vitepress-plugin-mermaid": "^2.0.17",
+    "prettier": "^3.4.0",
+    "eslint": "^9.15.0",
+    "@eslint/js": "^9.15.0",
+    "typescript-eslint": "^8.15.0"
+  },
+  "keywords": [
+    "documentation",
+    "vitepress",
+    "frontend",
+    "backend",
+    "ai",
+    "learning"
+  ],
+  "author": "Allen_Yu",
+  "license": "MIT"
+}
