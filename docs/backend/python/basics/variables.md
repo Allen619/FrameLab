@@ -52,8 +52,12 @@ price = 19.99
 temperature = -3.5
 
 # 复数 (complex) - JS 没有原生支持
-z = 3 + 4j
+z = 3 + 4j  # 3 是实部，4j 是虚部（j 是虚数单位，工程领域惯例）
+print(z.real)  # 3.0
+print(z.imag)  # 4.0
 ```
+
+> **关于 `j`**: 数学中虚数单位通常用 `i`，但工程领域用 `j`（因为 `i` 表示电流）。Python 采用工程惯例。前端开发中基本用不到复数，了解即可。
 
 ```javascript
 // JavaScript 对比

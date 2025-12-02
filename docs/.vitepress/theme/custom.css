@@ -1,0 +1,73 @@
+/**
+ * 通用自定义样式
+ *
+ * 适用于所有设备的基础样式优化
+ * 不包含媒体查询，全局生效
+ *
+ * 注意：
+ * - 保持最小化改动原则
+ * - 通过增量覆盖方式实现
+ * - 不影响现有配置和扩展性
+ */
+
+/* ============================================
+   1. 基础优化
+   ============================================ */
+
+/* 平滑滚动 */
+html {
+  scroll-behavior: smooth;
+}
+
+/* 图片防止溢出 */
+.vp-doc img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* 表格容器滚动支持 */
+.vp-doc table {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+/* ============================================
+   2. 触摸设备优化
+   ============================================ */
+
+/* 触摸滚动优化 */
+.VPSidebar,
+.VPContent,
+.vp-doc div[class*='language-'] > pre {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ============================================
+   3. 过渡动画
+   ============================================ */
+
+/* 链接和按钮过渡 */
+.vp-doc a,
+.VPButton,
+.VPNavBarMenuLink,
+.VPSidebarItem .link {
+  transition: color 0.2s ease, background-color 0.2s ease, opacity 0.2s ease;
+}
+
+/* ============================================
+   4. 可访问性增强
+   ============================================ */
+
+/* 焦点状态 */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--vp-c-brand-1);
+  outline-offset: 2px;
+}
+
+/* 跳过链接（屏幕阅读器） */
+.VPSkipLink {
+  z-index: 999;
+}
