@@ -104,6 +104,86 @@ if (!isAdmin) {
 | `\|\|`     | `or`   |
 | `!`        | `not`  |
 
+### 布尔表达式规范 (PEP 8)
+
+```python
+# ✅ 推荐: 直接使用真值判断
+if items:
+    print("列表非空")
+
+if not items:
+    print("列表为空")
+
+if name:
+    print("名字非空")
+
+if is_valid:
+    print("有效")
+
+# ❌ 不推荐: 与 True/False 比较
+if items == True:      # 不好
+    pass
+
+if is_valid == True:   # 不好
+    pass
+
+if len(items) > 0:     # 不好，直接用 if items:
+    pass
+
+if len(items) == 0:    # 不好，直接用 if not items:
+    pass
+
+# ✅ 推荐: None 检查使用 is
+if result is None:
+    print("无结果")
+
+if result is not None:
+    print("有结果")
+
+# ❌ 不推荐: 使用 == 检查 None
+if result == None:     # 不好
+    pass
+
+# ✅ 推荐: 空容器检查
+data = []
+if not data:           # 推荐
+    print("空列表")
+
+# ❌ 不推荐
+if data == []:         # 不好
+    pass
+
+if len(data) == 0:     # 不好
+    pass
+```
+
+```javascript
+// JavaScript 对比 - 也推荐类似风格
+if (items.length) {
+  console.log('数组非空')
+}
+
+if (!items.length) {
+  console.log('数组为空')
+}
+
+// 但 JS 的 null/undefined 检查通常用 ===
+if (result === null) {
+  console.log('无结果')
+}
+```
+
+**规范总结**：
+
+| 场景 | ✅ 推荐 | ❌ 不推荐 |
+|------|---------|-----------|
+| 检查非空容器 | `if items:` | `if len(items) > 0:` |
+| 检查空容器 | `if not items:` | `if len(items) == 0:` |
+| 检查 None | `if x is None:` | `if x == None:` |
+| 检查非 None | `if x is not None:` | `if x != None:` |
+| 检查布尔值 | `if flag:` | `if flag == True:` |
+| 检查假布尔值 | `if not flag:` | `if flag == False:` |
+
 ## for 循环
 
 ### 遍历序列

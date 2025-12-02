@@ -1,0 +1,108 @@
+/**
+ * Mermaid 图表点击放大样式
+ *
+ * 为所有 Mermaid 图表添加点击提示和交互效果
+ */
+
+/* Mermaid 容器样式 */
+.mermaid {
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.mermaid:hover {
+  transform: scale(1.01);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.dark .mermaid:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* 点击提示图标 */
+.mermaid::after {
+  content: '';
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='15 3 21 3 21 9'%3E%3C/polyline%3E%3Cpolyline points='9 21 3 21 3 15'%3E%3C/polyline%3E%3Cline x1='21' y1='3' x2='14' y2='10'%3E%3C/line%3E%3Cline x1='3' y1='21' x2='10' y2='14'%3E%3C/line%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 20px 20px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 6px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dark .mermaid::after {
+  background-color: rgba(50, 50, 50, 0.9);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23aaa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='15 3 21 3 21 9'%3E%3C/polyline%3E%3Cpolyline points='9 21 3 21 3 15'%3E%3C/polyline%3E%3Cline x1='21' y1='3' x2='14' y2='10'%3E%3C/line%3E%3Cline x1='3' y1='21' x2='10' y2='14'%3E%3C/line%3E%3C/svg%3E");
+}
+
+.mermaid:hover::after {
+  opacity: 1;
+}
+
+/* 点击时的反馈效果 */
+.mermaid:active {
+  transform: scale(0.99);
+}
+
+/* 移动端适配 - 始终显示放大图标 */
+@media (max-width: 768px) {
+  .mermaid::after {
+    opacity: 0.7;
+    width: 24px;
+    height: 24px;
+    background-size: 16px 16px;
+    top: 6px;
+    right: 6px;
+  }
+
+  .mermaid:hover::after {
+    opacity: 1;
+  }
+}
+
+/* 提示文字 (可选，悬停时显示) */
+.mermaid::before {
+  content: '点击放大';
+  position: absolute;
+  top: 8px;
+  right: 42px;
+  padding: 4px 8px;
+  font-size: 12px;
+  color: #666;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 4px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+.dark .mermaid::before {
+  background: rgba(50, 50, 50, 0.9);
+  color: #aaa;
+}
+
+.mermaid:hover::before {
+  opacity: 1;
+}
+
+/* 移动端隐藏提示文字 */
+@media (max-width: 768px) {
+  .mermaid::before {
+    display: none;
+  }
+}

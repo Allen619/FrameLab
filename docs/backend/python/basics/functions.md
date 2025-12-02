@@ -386,6 +386,144 @@ function add(a: number, b: number): number {
 
 ## 对前端开发者
 
+### 函数命名规范
+
+```python
+# ✅ 函数名使用 snake_case
+def get_user_by_id(user_id):
+    pass
+
+def calculate_total_price(items):
+    pass
+
+# ✅ 布尔函数以 is_、has_、can_、should_ 开头
+def is_valid_email(email):
+    return "@" in email
+
+def has_permission(user, action):
+    return action in user.permissions
+
+def can_access_resource(user, resource):
+    pass
+
+# ✅ 私有函数以单下划线开头
+def _internal_helper():
+    """模块内部使用，不建议外部调用"""
+    pass
+
+# ✅ 获取/设置类方法的命名
+class User:
+    def get_full_name(self):
+        return f"{self.first_name} {self.last_name}"
+
+    def set_password(self, password):
+        self._password = hash(password)
+```
+
+```javascript
+// JavaScript 对比 - 使用 camelCase
+function getUserById(userId) {}
+function calculateTotalPrice(items) {}
+function isValidEmail(email) {}
+function hasPermission(user, action) {}
+```
+
+### 文档字符串 (Docstring)
+
+Python 使用文档字符串（docstring）来记录函数说明，类似 JSDoc。
+
+```python
+def calculate_discount(price, discount_rate, min_price=0):
+    """计算折扣后的价格。
+
+    Args:
+        price: 原始价格
+        discount_rate: 折扣率 (0-1 之间的小数)
+        min_price: 最低价格限制，默认为 0
+
+    Returns:
+        折扣后的价格，不低于 min_price
+
+    Raises:
+        ValueError: 当 discount_rate 不在 0-1 范围内时
+
+    Example:
+        >>> calculate_discount(100, 0.2)
+        80.0
+        >>> calculate_discount(100, 0.9, min_price=20)
+        20
+    """
+    if not 0 <= discount_rate <= 1:
+        raise ValueError("discount_rate must be between 0 and 1")
+
+    discounted = price * (1 - discount_rate)
+    return max(discounted, min_price)
+
+
+# 简单函数可以用单行 docstring
+def add(a, b):
+    """返回两个数的和。"""
+    return a + b
+
+
+# 查看函数文档
+print(calculate_discount.__doc__)
+help(calculate_discount)
+```
+
+```javascript
+// JavaScript JSDoc 对比
+/**
+ * 计算折扣后的价格
+ * @param {number} price - 原始价格
+ * @param {number} discountRate - 折扣率
+ * @param {number} [minPrice=0] - 最低价格限制
+ * @returns {number} 折扣后的价格
+ * @throws {Error} 当 discountRate 无效时
+ */
+function calculateDiscount(price, discountRate, minPrice = 0) {
+  // ...
+}
+```
+
+**常见 Docstring 风格**：
+
+```python
+# Google 风格 (推荐，简洁易读)
+def fetch_data(url, timeout=30):
+    """从 URL 获取数据。
+
+    Args:
+        url: 请求的 URL 地址
+        timeout: 超时时间（秒）
+
+    Returns:
+        响应数据的字典
+
+    Raises:
+        ConnectionError: 网络连接失败时
+    """
+    pass
+
+
+# NumPy 风格 (学术/数据科学项目常用)
+def calculate_mean(values):
+    """
+    计算数值列表的平均值。
+
+    Parameters
+    ----------
+    values : list of float
+        数值列表
+
+    Returns
+    -------
+    float
+        平均值
+    """
+    pass
+```
+
 ### 常见误区
 
 ```python

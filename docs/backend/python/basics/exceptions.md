@@ -124,6 +124,67 @@ except EmailInvalidError as e:
     print(e)  # Invalid email: invalid-email
 ```
 
+#### 自定义异常命名规范
+
+```python
+# ✅ 异常类名以 Error 结尾
+class ValidationError(Exception):
+    pass
+
+class ConnectionTimeoutError(Exception):
+    pass
+
+class AuthenticationError(Exception):
+    pass
+
+class PermissionDeniedError(Exception):
+    pass
+
+# ✅ 按业务领域组织异常层次
+class AppError(Exception):
+    """应用程序基础异常"""
+    pass
+
+class DatabaseError(AppError):
+    """数据库相关异常"""
+    pass
+
+class NetworkError(AppError):
+    """网络相关异常"""
+    pass
+
+class ConfigurationError(AppError):
+    """配置相关异常"""
+    pass
+
+# ✅ 异常消息应清晰、有用
+class UserNotFoundError(Exception):
+    def __init__(self, user_id):
+        super().__init__(f"User with id '{user_id}' not found")
+        self.user_id = user_id
+
+# ❌ 避免使用模糊的异常名
+# class MyError(Exception):  # 不好，不清楚是什么错误
+#     pass
+```
+
+```javascript
+// JavaScript 对比
+class ValidationError extends Error {
+  constructor(message) {
+    super(message)
+    this.name = 'ValidationError'
+  }
+}
+
+class UserNotFoundError extends Error {
+  constructor(userId) {
+    super(`User with id '${userId}' not found`)
+    this.userId = userId
+  }
+}
+```
+
 ### 异常链 (raise from)
 
 Python 支持异常链,保留原始异常信息:

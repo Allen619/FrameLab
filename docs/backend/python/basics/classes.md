@@ -341,7 +341,45 @@ print(add_5(20))  # 25
 
 ## 属性装饰器
 
-### @property
+### 为什么需要属性装饰器？
+
+直接暴露属性无法控制赋值逻辑：
+
+```python
+class User:
+    def __init__(self, age):
+        self.age = age
+
+user = User(25)
+user.age = -10  # 😱 可以设置负数年龄！
+```
+
+`@property` 让你可以在读取/赋值时添加逻辑控制，同时保持属性的访问语法。
+
+### @property（getter）
+
+```python
+class Circle:
+    def __init__(self, radius):
+        self._radius = radius  # 私有属性用 _ 前缀
+
+    @property
+    def radius(self):
+        """getter - 读取时调用"""
+        return self._radius
+
+    @property
+    def area(self):
+        """只读计算属性"""
+        return 3.14159 * self._radius ** 2
+
+circle = Circle(5)
+print(circle.radius)  # 5 - 像访问属性一样，实际调用了方法
+print(circle.area)    # 78.5 - 计算属性
+circle.area = 100     # ❌ AttributeError - 没有 setter，不能赋值
+```
+
+### @xxx.setter（setter）
 
 ```python
 class Circle:
@@ -350,30 +388,24 @@ class Circle:
 
     @property
     def radius(self):
-        """getter - 读取属性"""
         return self._radius
 
-    @radius.setter
+    @radius.setter  # 注意：名字必须和 @property 一致
     def radius(self, value):
-        """setter - 设置属性"""
+        """setter - 赋值时调用"""
         if value < 0:
             raise ValueError("Radius cannot be negative")
         self._radius = value
 
-    @property
-    def area(self):
-        """只读计算属性"""
-        return 3.14159 * self._radius ** 2
-
 circle = Circle(5)
-print(circle.radius)  # 5 - 调用 getter
-circle.radius = 10    # 调用 setter
-print(circle.area)    # 314.159 - 计算属性
-# circle.area = 100   # AttributeError - 只读
+circle.radius = 10    # ✅ 调用 setter
+circle.radius = -1    # ❌ ValueError - 验证生效
 ```
 
+### JavaScript 对比
+
 ```javascript
-// JavaScript 对比
+// JavaScript - 使用 get/set 关键字
 class Circle {
   constructor(radius) {
     this._radius = radius
@@ -393,6 +425,11 @@ class Circle {
   }
 }
 ```
+
+| 功能 | JavaScript | Python |
+|------|-----------|--------|
+| getter | `get name() {}` | `@property` + `def name(self)` |
+| setter | `set name(v) {}` | `@name.setter` + `def name(self, v)` |
 
 ## 数据类 (dataclass)
 
@@ -425,6 +462,112 @@ interface User {
 ```
 
 ## 对前端开发者
+
+### 类命名规范
+
+```python
+# ✅ 类名使用 PascalCase (大驼峰)
+class UserProfile:
+    pass
+
+class HttpRequestHandler:
+    pass
+
+class JSONParser:
+    pass
+
+# ✅ 异常类以 Error 结尾
+class ValidationError(Exception):
+    pass
+
+class DatabaseConnectionError(Exception):
+    pass
+
+# ✅ 抽象基类通常以 Base 或 Abstract 开头
+from abc import ABC, abstractmethod
+
+class BaseHandler(ABC):
+    @abstractmethod
+    def handle(self):
+        pass
+
+class AbstractRepository(ABC):
+    pass
+
+# ✅ 混入类以 Mixin 结尾
+class LoggingMixin:
+    def log(self, message):
+        print(f"[LOG] {message}")
+
+class SerializableMixin:
+    def to_dict(self):
+        return self.__dict__
+```
+
+```javascript
+// JavaScript 类命名对比 (相同规则)
+class UserProfile {}
+class HttpRequestHandler {}
+class ValidationError extends Error {}
+```
+
+### 类文档字符串
+
+```python
+class User:
+    """表示系统中的用户。
+
+    用于存储和管理用户信息，包括基本资料和权限。
+
+    Attributes:
+        name: 用户名
+        email: 邮箱地址
+        role: 用户角色 ('admin', 'user', 'guest')
+
+    Example:
+        >>> user = User("Alice", "alice@example.com")
+        >>> user.greet()
+        'Hello, Alice!'
+    """
+
+    def __init__(self, name, email, role="user"):
+        """初始化用户实例。
+
+        Args:
+            name: 用户名，不能为空
+            email: 邮箱地址
+            role: 用户角色，默认为 'user'
+
+        Raises:
+            ValueError: 当 name 为空时
+        """
+        if not name:
+            raise ValueError("name cannot be empty")
+        self.name = name
+        self.email = email
+        self.role = role
+
+    def greet(self):
+        """返回问候语。
+
+        Returns:
+            包含用户名的问候字符串
+        """
+        return f"Hello, {self.name}!"
+
+    def has_permission(self, action):
+        """检查用户是否有指定权限。
+
+        Args:
+            action: 要检查的操作名称
+
+        Returns:
+            如果用户有权限返回 True，否则返回 False
+        """
+        if self.role == "admin":
+            return True
+        return action in ["read", "view"]
+```
 
 ### 常见误区
 

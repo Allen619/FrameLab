@@ -38,6 +38,100 @@ PI = 3.14159
 
 > **关键差异**: Python 没有 `let`、`const`、`var`。变量名直接赋值即可。常量使用全大写命名约定，但 Python 不会阻止你修改它。
 
+## 命名规范 (PEP 8)
+
+Python 的命名规范与 JavaScript 有显著差异，这是前端开发者最需要适应的地方之一。
+
+### 基本规则
+
+```python
+# 变量和函数: snake_case (下划线分隔小写)
+user_name = "Alice"
+total_count = 100
+is_active = True
+
+# 常量: UPPER_SNAKE_CASE (全大写下划线分隔)
+MAX_CONNECTIONS = 100
+DEFAULT_TIMEOUT = 30
+PI = 3.14159
+
+# 类名: PascalCase (大驼峰)
+class UserProfile:
+    pass
+
+class HttpRequestHandler:
+    pass
+
+# 模块和包名: lowercase (全小写，可用下划线)
+# my_module.py
+# my_package/
+```
+
+```javascript
+// JavaScript 对比 - 使用 camelCase
+const userName = 'Alice'
+const totalCount = 100
+const isActive = true
+
+// 类名也是 PascalCase（这点相同）
+class UserProfile {}
+```
+
+### 特殊命名约定
+
+```python
+# 单下划线前缀: 表示"内部使用"（约定，非强制）
+_internal_var = "仅供模块内部使用"
+
+def _helper_function():
+    """内部辅助函数，不建议外部调用"""
+    pass
+
+# 双下划线前缀: 触发名称改写 (name mangling)
+class MyClass:
+    def __init__(self):
+        self.__private = "真正的私有属性"
+        # 实际存储为 _MyClass__private
+
+# 双下划线前后缀: Python 特殊方法（魔术方法）
+# 不要自定义这种格式的名称！
+__init__    # 构造函数
+__str__     # 字符串表示
+__len__     # 长度
+
+# 单下划线: 临时变量或忽略的值
+for _ in range(5):      # 不需要循环变量时
+    print("hello")
+
+x, _, z = (1, 2, 3)     # 忽略中间值
+```
+
+### 与保留字冲突
+
+```python
+# 当变量名与 Python 保留字冲突时，加单下划线后缀
+class_ = "CSS类名"      # 避免与 class 关键字冲突
+type_ = "类型"          # 避免与 type() 函数冲突
+id_ = 123               # 避免与 id() 函数冲突
+list_ = [1, 2, 3]       # 避免与 list 类型冲突
+
+# 常见需要避免的名称
+# class, type, id, list, dict, str, int, float, bool, set, input, print
+```
+
+### JavaScript vs Python 命名对照
+
+| 场景 | JavaScript | Python |
+|------|------------|--------|
+| 变量 | `userName` | `user_name` |
+| 函数 | `getUserName()` | `get_user_name()` |
+| 常量 | `MAX_SIZE` | `MAX_SIZE` |
+| 类名 | `UserProfile` | `UserProfile` |
+| 私有属性 | `#privateField` / `_private` | `_private` / `__private` |
+| 布尔变量 | `isActive` | `is_active` |
+
+> **重要**: 在 Python 项目中坚持使用 `snake_case`，即使你习惯了 JS 的 `camelCase`。这不仅是约定，也是社区代码风格的一部分。大多数 Python 库和框架都遵循这一规范。
+
 ## 基本数据类型
 
 ### 数字类型

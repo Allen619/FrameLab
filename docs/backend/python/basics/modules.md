@@ -107,6 +107,76 @@ print(sys.path)
 
 ## 💡 对前端开发者
 
+### 导入规范 (PEP 8)
+
+Python 对导入语句有明确的规范，与 JavaScript 的 import 习惯有所不同。
+
+**导入顺序**（每组之间空一行）：
+
+```python
+# 1. 标准库导入
+import os
+import sys
+from datetime import datetime
+
+# 2. 第三方库导入
+import requests
+import numpy as np
+from flask import Flask
+
+# 3. 本地/项目导入
+from myproject.utils import helper
+from . import local_module
+```
+
+```javascript
+// JavaScript 通常的导入顺序类似
+import fs from 'fs' // Node.js 内置
+import React from 'react' // 第三方库
+import { Button } from './components' // 本地模块
+```
+
+**导入风格规范**：
+
+```python
+# ✅ 推荐: 每个模块单独一行
+import os
+import sys
+
+# ❌ 不推荐: 多个模块同一行
+import os, sys, json
+
+# ✅ 推荐: from 导入多个成员可以换行
+from collections import (
+    OrderedDict,
+    defaultdict,
+    namedtuple,
+)
+
+# ✅ 推荐: 使用绝对导入
+from mypackage.submodule import function
+
+# ⚠️ 相对导入仅在包内使用
+from . import sibling_module
+from ..parent import something
+```
+
+**常见别名约定**：
+
+```python
+# 这些别名是社区约定，大家都认识
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import tensorflow as tf
+import torch as th
+
+# ❌ 避免自创奇怪的别名
+import numpy as n      # 不好，不清晰
+import pandas as frame  # 不好，不是约定
+```
+
 ### 与 JavaScript/TypeScript 对比
 
 Python 的模块系统与 JavaScript ES6 模块有相似之处,但也有关键差异:
