@@ -85,7 +85,7 @@ description: JavaScript/TypeScript 到 Python 的完整概念映射表
 | `export { a, b }`                 | `__all__ = ['a', 'b']`           | 中     | 控制 `import *`            | [→](/backend/python/basics/modules)  |
 | `package.json`                    | `__init__.py` / `pyproject.toml` | 中     | 包元数据和初始化           | [→](/backend/python/basics/packages) |
 | `index.js` (入口)                 | `__init__.py` (包入口)           | 中     | Python 可重新导出成员      | [→](/backend/python/basics/packages) |
-| `node_modules/`                   | `site-packages/`                 | 高     | 第三方包安装目录           | [→](/backend/python/tooling/poetry)  |
+| `node_modules/`                   | `site-packages/`                 | 高     | 第三方包安装目录           | [→](/backend/python/tooling/dependency-management/)  |
 | 相对导入 `'./module'`             | 相对导入 `from . import module`  | 中     | Python 使用点号            | [→](/backend/python/basics/packages) |
 | 绝对导入 `'module'`               | 绝对导入 `import module`         | 高     | 基于模块搜索路径           | [→](/backend/python/basics/modules)  |
 
@@ -93,14 +93,14 @@ description: JavaScript/TypeScript 到 Python 的完整概念映射表
 
 | JS/TS 概念          | Python 对应                  | 相似度 | 说明       | 详情                         |
 | ------------------- | ---------------------------- | ------ | ---------- | ---------------------------- |
-| npm/pnpm/yarn       | Poetry                       | 高     | 命令类似   | [→](/backend/python/tooling/poetry) |
-| `npm init`          | `poetry init`                | 高     | 初始化项目 | [→](/backend/python/tooling/poetry) |
-| `npm install`       | `poetry install`             | 高     | 安装依赖   | [→](/backend/python/tooling/poetry) |
-| `npm add <pkg>`     | `poetry add <pkg>`           | 高     | 添加依赖   | [→](/backend/python/tooling/poetry) |
-| `npm run <script>`  | `poetry run <cmd>`           | 高     | 运行脚本   | [→](/backend/python/tooling/poetry) |
-| `package.json`      | `pyproject.toml`             | 高     | 项目配置   | [→](/backend/python/tooling/poetry) |
-| `package-lock.json` | `poetry.lock`                | 高     | 锁定文件   | [→](/backend/python/tooling/poetry) |
-| `node_modules/`     | `.venv/`                     | 中     | 依赖目录   | [→](/backend/python/tooling/poetry) |
+| npm/pnpm/yarn       | Poetry/uv                    | 高     | 命令类似   | [→](/backend/python/tooling/dependency-management/) |
+| `npm init`          | `poetry init` / `uv init`    | 高     | 初始化项目 | [→](/backend/python/tooling/dependency-management/) |
+| `npm install`       | `poetry install` / `uv sync` | 高     | 安装依赖   | [→](/backend/python/tooling/dependency-management/) |
+| `npm add <pkg>`     | `poetry add` / `uv add`      | 高     | 添加依赖   | [→](/backend/python/tooling/dependency-management/) |
+| `npm run <script>`  | `poetry run` / `uv run`      | 高     | 运行脚本   | [→](/backend/python/tooling/dependency-management/) |
+| `package.json`      | `pyproject.toml`             | 高     | 项目配置   | [→](/backend/python/tooling/dependency-management/) |
+| `package-lock.json` | `poetry.lock` / `uv.lock`    | 高     | 锁定文件   | [→](/backend/python/tooling/dependency-management/) |
+| `node_modules/`     | `.venv/`                     | 中     | 依赖目录   | [→](/backend/python/tooling/dependency-management/) |
 | ESLint              | Ruff                         | 高     | 代码检查   | [→](/backend/python/tooling/ruff)   |
 | Prettier            | Ruff format                  | 高     | 代码格式化 | [→](/backend/python/tooling/ruff)   |
 | `.eslintrc.js`      | `pyproject.toml [tool.ruff]` | 中     | 配置文件   | [→](/backend/python/tooling/ruff)   |

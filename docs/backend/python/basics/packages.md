@@ -296,5 +296,5 @@ import my_package
 ### 推荐下一步阅读
 
 - [模块系统](./modules) - 回顾 Python 模块基础
-- [Poetry 依赖管理](../tooling/poetry) - 学习如何管理第三方包
+- [依赖管理工具](../tooling/dependency-management/) - 学习如何管理第三方包
 - [环境安装指南](../guide/setup) - 了解 Python 包管理工具 (pip/uv/Poetry)

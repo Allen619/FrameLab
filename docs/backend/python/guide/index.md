@@ -80,7 +80,7 @@ description: 从 JavaScript/TypeScript 迁移到 Python 的完整指南
 
 掌握现代 Python 开发工具：
 
-1. [Poetry](/backend/python/tooling/poetry) - 对应 npm/pnpm
+1. [依赖管理](/backend/python/tooling/dependency-management/) - 对应 npm/pnpm
 2. [Ruff](/backend/python/tooling/ruff) - 对应 ESLint + Prettier
 3. [类型系统](/backend/python/tooling/typing) - 对应 TypeScript
 

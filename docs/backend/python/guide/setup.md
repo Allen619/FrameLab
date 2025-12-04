@@ -249,7 +249,7 @@ poetry add requests
 poetry run python main.py
 ```
 
-**详细对比**: 参见 [Poetry 依赖管理](../tooling/poetry)
+**详细对比**: 参见 [依赖管理工具��览](../tooling/dependency-management/)
 
 ## VSCode Python 扩展配置
 
@@ -362,5 +362,5 @@ Python version: 3.12.0 (main, ...)
 ### 推荐下一步阅读
 
 - [模块系统](../basics/modules) - 了解 Python 如何组织代码
-- [Poetry 依赖管理](../tooling/poetry) - 深入了解包管理工具对比
+- [依赖管理工具](../tooling/dependency-management/) - 深入了解包管理工具对比
 - [常见陷阱](./pitfalls) - 避免前端开发者常犯的错误
