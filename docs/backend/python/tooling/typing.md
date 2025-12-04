@@ -365,20 +365,28 @@ user: User = {
 }
 create_user(user)
 
-# 可选字段
-class UserOptional(TypedDict, total=False):
-    name: str
-    age: int
-    bio: str  # 可选
+# total=False: 所有字段都变成可选
+class UserAllOptional(TypedDict, total=False):
+    name: str   # 可选
+    age: int    # 可选
+    bio: str    # 可选
+
+# Python 3.11+: 用 NotRequired 标记单个可选字段
+from typing import NotRequired
+
+class UserWithOptional(TypedDict):
+    name: str                    # 必填
+    age: int                     # 必填
+    bio: NotRequired[str]        # 可选
 ```
 
 ```typescript
 // TypeScript 对比
 interface User {
-  name: string
-  age: number
-  email: string
-  bio?: string // 可选
+  name: string       // 必填
+  age: number        // 必填
+  email: string      // 必填
+  bio?: string       // 可选 (用 ? 标记)
 }
 
 function createUser(data: User): void {
@@ -451,58 +459,46 @@ class Dog(Animal):
 
 ## 类型检查工具
 
-### mypy 配置
+### VS Code + Pylance（推荐）
 
-安装 mypy:
+VS Code 自带 **Pylance** 扩展，开箱即用，无需安装额外包：
+
+```json
+// settings.json
+{
+  "python.analysis.typeCheckingMode": "basic"
+}
+```
+
+三个级别：
+- `"off"` - 关闭类型检查
+- `"basic"` - 基础检查（推荐）
+- `"strict"` - 严格模式
+
+配置后，编辑器会实时显示类型错误（红色波浪线），体验和 TypeScript 一致。
+
+### mypy（CI/CD 使用）
+
+如果需要在 CI/CD 中自动检查类型，可以使用 mypy：
 
 ```bash
-poetry add mypy --group dev
+# 安装
+uv add --dev mypy
+
+# 运行检查
+mypy .
+mypy src/main.py
 ```
 
 **pyproject.toml 配置**:
 
 ```toml
 [tool.mypy]
-# 严格模式(推荐)
 strict = true
-
-# 或手动配置
 python_version = "3.10"
-warn_return_any = true
-warn_unused_configs = true
-disallow_untyped_defs = true
-disallow_any_generics = true
-
-# 忽略特定模块
-[[tool.mypy.overrides]]
-module = "third_party_lib.*"
-ignore_missing_imports = true
 ```
 
-### 运行 mypy
-
-```bash
-# 检查所有文件
-poetry run mypy .
-
-# 检查特定文件
-poetry run mypy src/main.py
-
-# 显示错误代码
-poetry run mypy . --show-error-codes
-
-# 生成 HTML 报告
-poetry run mypy . --html-report ./mypy-report
-```
-
-### VS Code 集成
-
-```json
-{
-  "python.linting.mypyEnabled": true,
-  "python.linting.mypyArgs": ["--strict", "--show-column-numbers"]
-}
-```
+> **总结**: 日常开发用 Pylance 即可，mypy 主要用于 CI/CD 自动化检查。
 
 ## 类型提示最佳实践
 
