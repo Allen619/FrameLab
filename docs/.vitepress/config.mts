@@ -91,7 +91,15 @@ export default withMermaid(
             text: '工程化工具',
             items: [
               { text: '概述', link: '/backend/python/tooling/' },
-              { text: 'Poetry 依赖管理', link: '/backend/python/tooling/poetry' },
+              {
+                text: '依赖管理',
+                collapsed: false,
+                items: [
+                  { text: '工具总览', link: '/backend/python/tooling/dependency-management/' },
+                  { text: 'Poetry', link: '/backend/python/tooling/dependency-management/poetry' },
+                  { text: 'uv', link: '/backend/python/tooling/dependency-management/uv' },
+                ],
+              },
               { text: 'Ruff 代码检查', link: '/backend/python/tooling/ruff' },
               { text: '类型系统', link: '/backend/python/tooling/typing' },
             ],

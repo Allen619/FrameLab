@@ -10,7 +10,7 @@ description: Python 现代工程化工具链,与前端工具对比
 本章节你将学习:
 
 - Python 现代工具链概览
-- Poetry - 依赖管理(对应 npm/pnpm)
+- 依赖管理 - Poetry/uv (对应 npm/pnpm)
 - Ruff - 代码检查与格式化(对应 ESLint + Prettier)
 - Type Hints - 类型系统(对应 TypeScript)
 
@@ -18,7 +18,7 @@ description: Python 现代工程化工具链,与前端工具对比
 
 ```mermaid
 graph LR
-    A[Poetry 依赖管理] --> B[Ruff 代码检查]
+    A[依赖管理<br/>Poetry/uv] --> B[Ruff 代码检查]
     B --> C[mypy 类型检查]
     C --> D[pytest 测试]
     D --> E[构建部署]
@@ -33,8 +33,8 @@ graph LR
 
 | 用途       | JavaScript/TypeScript | Python            |
 | ---------- | --------------------- | ----------------- |
-| 包管理     | npm/pnpm/yarn         | Poetry/pip        |
-| 依赖锁定   | package-lock.json     | poetry.lock       |
+| 包管理     | npm/pnpm/yarn         | Poetry/uv/pip     |
+| 依赖锁定   | package-lock.json     | poetry.lock/uv.lock |
 | 项目配置   | package.json          | pyproject.toml    |
 | 代码检查   | ESLint                | Ruff              |
 | 代码格式化 | Prettier              | Ruff (或 Black)   |
@@ -44,6 +44,8 @@ graph LR
 
 ## 开始学习
 
-- [Poetry](/backend/python/tooling/poetry) - 现代化的 Python 依赖管理工具
+- [依赖管理工具总览](/backend/python/tooling/dependency-management/) - Python 依赖管理工具对比与选择
+  - [Poetry](/backend/python/tooling/dependency-management/poetry) - 成熟稳定的项目管理工具
+  - [uv](/backend/python/tooling/dependency-management/uv) - 极速的现代化包管理器
 - [Ruff](/backend/python/tooling/ruff) - 极速的 Python Linter 和 Formatter
 - [类型系统](/backend/python/tooling/typing) - Python Type Hints 与类型检查
