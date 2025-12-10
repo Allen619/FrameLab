@@ -113,7 +113,6 @@ export default withMermaid(
               { text: '生成器', link: '/backend/python/advanced/generators' },
               { text: '上下文管理器', link: '/backend/python/advanced/context-managers' },
               { text: '异步编程', link: '/backend/python/advanced/async' },
-              { text: '数据类 (dataclass)', link: '/backend/python/advanced/dataclasses' },
             ],
           },
           {
