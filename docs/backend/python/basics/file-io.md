@@ -374,5 +374,5 @@ with open("data.txt", "r", encoding="utf-8") as f:
 ### 推荐下一步阅读
 
 - [异常处理](./exceptions) - 处理文件 I/O 异常
-- [pathlib 库](../libraries/pathlib) - 深入 pathlib 高级用法
+- [pathlib 库](../libraries/stdlib/file-system/pathlib) - 深入 pathlib 高级用法
 - [上下文管理器](../advanced/context-managers) - 理解 with 语句原理
