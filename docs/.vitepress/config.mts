@@ -31,6 +31,10 @@ export default withMermaid(
 
         '/backend/python/': [
           {
+            text: '📍 学习路径',
+            link: '/backend/python/roadmap',
+          },
+          {
             text: '前端迁移指南',
             items: [
               { text: '概述', link: '/backend/python/guide/' },
@@ -74,11 +78,11 @@ export default withMermaid(
                 collapsed: false,
                 items: [
                   { text: '工具总览', link: '/backend/python/tooling/dependency-management/' },
+                  { text: '⭐ uv', link: '/backend/python/tooling/dependency-management/uv' },
                   { text: 'Poetry', link: '/backend/python/tooling/dependency-management/poetry' },
-                  { text: 'uv', link: '/backend/python/tooling/dependency-management/uv' },
                 ],
               },
-              { text: 'Ruff 代码检查', link: '/backend/python/tooling/ruff' },
+              { text: '⭐ Ruff 代码检查', link: '/backend/python/tooling/ruff' },
               { text: '类型系统', link: '/backend/python/tooling/typing' },
             ],
           },
@@ -108,17 +112,17 @@ export default withMermaid(
                     collapsed: true,
                     items: [
                       { text: 'os/sys 系统接口', link: '/backend/python/libraries/stdlib/file-system/os-sys' },
-                      { text: 'pathlib 路径操作', link: '/backend/python/libraries/stdlib/file-system/pathlib' },
+                      { text: '🔥 pathlib 路径操作', link: '/backend/python/libraries/stdlib/file-system/pathlib' },
                       { text: 'shutil 文件操作', link: '/backend/python/libraries/stdlib/file-system/shutil' },
-                      { text: 'subprocess 子进程', link: '/backend/python/libraries/stdlib/file-system/subprocess' },
+                      { text: '🔥 subprocess 子进程', link: '/backend/python/libraries/stdlib/file-system/subprocess' },
                     ],
                   },
                   {
                     text: '文本与数据',
                     collapsed: true,
                     items: [
-                      { text: 're 正则表达式', link: '/backend/python/libraries/stdlib/text-data/re' },
-                      { text: 'json 数据格式', link: '/backend/python/libraries/stdlib/text-data/json' },
+                      { text: '🔥 re 正则表达式', link: '/backend/python/libraries/stdlib/text-data/re' },
+                      { text: '🔥 json 数据格式', link: '/backend/python/libraries/stdlib/text-data/json' },
                       { text: 'csv 表格处理', link: '/backend/python/libraries/stdlib/text-data/csv' },
                       { text: 'string 字符串工具', link: '/backend/python/libraries/stdlib/text-data/string' },
                       { text: 'pickle 序列化', link: '/backend/python/libraries/stdlib/text-data/pickle' },
@@ -138,7 +142,7 @@ export default withMermaid(
                     text: '日期与时间',
                     collapsed: true,
                     items: [
-                      { text: 'datetime 日期时间', link: '/backend/python/libraries/stdlib/datetime/datetime' },
+                      { text: '🔥 datetime 日期时间', link: '/backend/python/libraries/stdlib/datetime/datetime' },
                       { text: 'time 时间函数', link: '/backend/python/libraries/stdlib/datetime/time' },
                       { text: 'calendar 日历', link: '/backend/python/libraries/stdlib/datetime/calendar' },
                     ],
@@ -147,7 +151,7 @@ export default withMermaid(
                     text: '数据结构增强',
                     collapsed: true,
                     items: [
-                      { text: 'collections 容器', link: '/backend/python/libraries/stdlib/collections/collections' },
+                      { text: '🔥 collections 容器', link: '/backend/python/libraries/stdlib/collections/collections' },
                       { text: 'itertools 迭代器', link: '/backend/python/libraries/stdlib/collections/itertools' },
                       { text: 'functools 函数工具', link: '/backend/python/libraries/stdlib/collections/functools' },
                       { text: 'enum 枚举', link: '/backend/python/libraries/stdlib/collections/enum' },
@@ -207,10 +211,10 @@ export default withMermaid(
                     text: 'Web 框架',
                     collapsed: true,
                     items: [
-                      { text: 'FastAPI', link: '/backend/python/libraries/third-party/web/fastapi' },
+                      { text: '⭐ FastAPI', link: '/backend/python/libraries/third-party/web/fastapi' },
                       { text: 'Flask', link: '/backend/python/libraries/third-party/web/flask' },
                       { text: 'Django 概述', link: '/backend/python/libraries/third-party/web/django-overview' },
-                      { text: 'Pydantic', link: '/backend/python/libraries/third-party/web/pydantic' },
+                      { text: '⭐ Pydantic', link: '/backend/python/libraries/third-party/web/pydantic' },
                     ],
                   },
                   {
@@ -218,7 +222,7 @@ export default withMermaid(
                     collapsed: true,
                     items: [
                       { text: 'requests', link: '/backend/python/libraries/third-party/http/requests' },
-                      { text: 'httpx', link: '/backend/python/libraries/third-party/http/httpx' },
+                      { text: '⭐ httpx', link: '/backend/python/libraries/third-party/http/httpx' },
                       { text: 'aiohttp', link: '/backend/python/libraries/third-party/http/aiohttp' },
                     ],
                   },
@@ -226,7 +230,7 @@ export default withMermaid(
                     text: '数据处理',
                     collapsed: true,
                     items: [
-                      { text: 'pandas', link: '/backend/python/libraries/third-party/data/pandas' },
+                      { text: '⭐ pandas', link: '/backend/python/libraries/third-party/data/pandas' },
                       { text: 'numpy', link: '/backend/python/libraries/third-party/data/numpy' },
                       { text: 'polars', link: '/backend/python/libraries/third-party/data/polars' },
                     ],
@@ -235,7 +239,7 @@ export default withMermaid(
                     text: '数据库',
                     collapsed: true,
                     items: [
-                      { text: 'SQLAlchemy', link: '/backend/python/libraries/third-party/database/sqlalchemy' },
+                      { text: '⭐ SQLAlchemy', link: '/backend/python/libraries/third-party/database/sqlalchemy' },
                       { text: 'PyMongo', link: '/backend/python/libraries/third-party/database/pymongo' },
                       { text: 'redis-py', link: '/backend/python/libraries/third-party/database/redis-py' },
                     ],
@@ -244,7 +248,7 @@ export default withMermaid(
                     text: '测试',
                     collapsed: true,
                     items: [
-                      { text: 'pytest', link: '/backend/python/libraries/third-party/testing/pytest' },
+                      { text: '⭐ pytest', link: '/backend/python/libraries/third-party/testing/pytest' },
                       { text: 'pytest-mock', link: '/backend/python/libraries/third-party/testing/pytest-mock' },
                       { text: 'coverage', link: '/backend/python/libraries/third-party/testing/coverage' },
                     ],
@@ -254,7 +258,7 @@ export default withMermaid(
                     collapsed: true,
                     items: [
                       { text: 'click', link: '/backend/python/libraries/third-party/cli/click' },
-                      { text: 'typer', link: '/backend/python/libraries/third-party/cli/typer' },
+                      { text: '⭐ typer', link: '/backend/python/libraries/third-party/cli/typer' },
                       { text: 'rich', link: '/backend/python/libraries/third-party/cli/rich' },
                     ],
                   },
@@ -262,7 +266,7 @@ export default withMermaid(
                     text: '配置管理',
                     collapsed: true,
                     items: [
-                      { text: 'python-dotenv', link: '/backend/python/libraries/third-party/config/python-dotenv' },
+                      { text: '⭐ python-dotenv', link: '/backend/python/libraries/third-party/config/python-dotenv' },
                       { text: 'PyYAML', link: '/backend/python/libraries/third-party/config/pyyaml' },
                       { text: 'toml', link: '/backend/python/libraries/third-party/config/toml' },
                     ],

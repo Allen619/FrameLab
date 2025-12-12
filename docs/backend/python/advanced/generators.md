@@ -203,6 +203,15 @@ function* flatten(arr) {
 
 ### 发送值到生成器
 
+生成器对象自带以下内置方法：
+
+| 方法 | 作用 | JS 对应 |
+|------|------|---------|
+| `next(gen)` | 执行到下一个 `yield` | `gen.next()` |
+| `gen.send(value)` | 发送值并继续执行 | `gen.next(value)` |
+| `gen.throw(exc)` | 在 `yield` 处抛出异常 | `gen.throw(exc)` |
+| `gen.close()` | 关闭生成器 | `gen.return()` |
+
 ```python
 def echo_gen():
     """接收发送的值"""
@@ -214,6 +223,10 @@ gen = echo_gen()
 next(gen)  # 启动生成器(必须先调用 next)
 gen.send("Hello")  # Received: Hello
 gen.send("World")  # Received: World
+
+# ⚠️ 为什么第一次必须用 next()?
+# 生成器刚创建时代码还没执行到 yield,没有"接收点"
+# gen.send("Hi")  # ❌ TypeError: can't send non-None value to a just-started generator
 
 # 双向通信
 def running_average():
