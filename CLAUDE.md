@@ -1,4 +1,4 @@
-<!-- OPENSPEC:START -->
+﻿<!-- OPENSPEC:START -->
 # OpenSpec Instructions
 
 These instructions are for AI assistants working in this project.
@@ -22,6 +22,8 @@ Keep this managed block so 'openspec update' can refresh the instructions.
 Auto-generated from all feature plans. Last updated: 2025-11-26
 
 ## Active Technologies
+- TypeScript (VitePress 配置), Markdown (文档内容) + VitePress ^1.6.4, vitepress-plugin-mermaid ^2.0.17, Mermaid.js ^11.12.1 (001-ops-k8s-tutorial)
+- 静态文件系统（Markdown 文件） (001-ops-k8s-tutorial)
 
 - TypeScript (VitePress 配置), Markdown (文档内容) + VitePress ^1.6.4, vitepress-plugin-mermaid ^2.0.17, mermaid ^11.12.1 (001-docs-site-setup)
 - 静态文件系统 (001-docs-site-setup)
@@ -45,6 +47,7 @@ cd src; pytest; ruff check .
 [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]: Follow standard conventions
 
 ## Recent Changes
+- 001-ops-k8s-tutorial: Added TypeScript (VitePress 配置), Markdown (文档内容) + VitePress ^1.6.4, vitepress-plugin-mermaid ^2.0.17, Mermaid.js ^11.12.1
 
 - 001-docs-site-setup: Added TypeScript (VitePress 配置), Markdown (文档内容) + VitePress ^1.6.4, vitepress-plugin-mermaid ^2.0.17, mermaid ^11.12.1
 
@@ -52,7 +55,6 @@ cd src; pytest; ruff check .
 
 <!-- MANUAL ADDITIONS START -->
 <!-- MANUAL ADDITIONS END -->
-- # 角色: 面向前端工程师的 Python 教程伴读导师
 
 ## 个人档案 (Profile)
 - **角色:** 资深技术教育家（专精于 Python 底层原理与 JS/TS 语言特性的对比分析）。

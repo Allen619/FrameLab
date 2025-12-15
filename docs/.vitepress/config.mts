@@ -19,6 +19,10 @@ export default withMermaid(
           text: 'AI',
           items: [{ text: 'LangChain', link: '/ai/langchain/' }],
         },
+        {
+          text: '运维',
+          items: [{ text: 'Kubernetes', link: '/ops/kubernetes/' }],
+        },
       ],
 
       sidebar: {
@@ -316,6 +320,81 @@ export default withMermaid(
           {
             text: '迁移',
             items: [{ text: 'Legacy 迁移指南', link: '/ai/langchain/guide/legacy-migration' }],
+          },
+        ],
+
+        '/ops/kubernetes/': [
+          {
+            text: '📍 学习路径',
+            link: '/ops/kubernetes/',
+          },
+          {
+            text: '基础概念',
+            collapsed: false,
+            items: [
+              { text: '概述', link: '/ops/kubernetes/concepts/' },
+              { text: 'K8s 是什么', link: '/ops/kubernetes/concepts/what-is-k8s' },
+              { text: '架构概览', link: '/ops/kubernetes/concepts/architecture' },
+              { text: 'Pod 详解', link: '/ops/kubernetes/concepts/pod' },
+              { text: 'Pod 生命周期', link: '/ops/kubernetes/concepts/pod-lifecycle' },
+              { text: '核心组件', link: '/ops/kubernetes/concepts/components' },
+            ],
+          },
+          {
+            text: '环境搭建',
+            collapsed: false,
+            items: [
+              { text: '概述', link: '/ops/kubernetes/setup/' },
+              { text: '前置要求', link: '/ops/kubernetes/setup/prerequisites' },
+              { text: 'Windows 安装', link: '/ops/kubernetes/setup/minikube-windows' },
+              { text: 'macOS 安装', link: '/ops/kubernetes/setup/minikube-macos' },
+              { text: 'kubectl 基础', link: '/ops/kubernetes/setup/kubectl-basics' },
+              { text: '第一个 Pod', link: '/ops/kubernetes/setup/first-pod' },
+              { text: '故障排查', link: '/ops/kubernetes/setup/troubleshooting' },
+            ],
+          },
+          {
+            text: '网络',
+            collapsed: true,
+            items: [
+              { text: '概述', link: '/ops/kubernetes/networking/' },
+              { text: '网络模型', link: '/ops/kubernetes/networking/network-model' },
+              { text: 'ClusterIP Service', link: '/ops/kubernetes/networking/service-clusterip' },
+              { text: 'NodePort Service', link: '/ops/kubernetes/networking/service-nodeport' },
+              { text: 'Ingress 入门', link: '/ops/kubernetes/networking/ingress' },
+            ],
+          },
+          {
+            text: '工作负载',
+            collapsed: true,
+            items: [
+              { text: '概述', link: '/ops/kubernetes/workloads/' },
+              { text: 'Deployment', link: '/ops/kubernetes/workloads/deployment' },
+              { text: '滚动更新', link: '/ops/kubernetes/workloads/rolling-update' },
+              { text: '版本回滚', link: '/ops/kubernetes/workloads/rollback' },
+              { text: '扩缩容', link: '/ops/kubernetes/workloads/scaling' },
+            ],
+          },
+          {
+            text: '配置与存储',
+            collapsed: true,
+            items: [
+              { text: '概述', link: '/ops/kubernetes/storage/' },
+              { text: 'ConfigMap', link: '/ops/kubernetes/storage/configmap' },
+              { text: 'Secret', link: '/ops/kubernetes/storage/secret' },
+              { text: '持久化存储', link: '/ops/kubernetes/storage/persistent-volume' },
+            ],
+          },
+          {
+            text: 'CI/CD',
+            collapsed: true,
+            items: [
+              { text: '概述', link: '/ops/kubernetes/cicd/' },
+              { text: 'CI/CD 概览', link: '/ops/kubernetes/cicd/overview' },
+              { text: 'Docker 镜像构建', link: '/ops/kubernetes/cicd/docker-build' },
+              { text: 'GitHub Actions', link: '/ops/kubernetes/cicd/github-actions' },
+              { text: '部署到 K8s', link: '/ops/kubernetes/cicd/deploy-to-k8s' },
+            ],
           },
         ],
       },
