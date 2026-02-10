@@ -2,14 +2,15 @@
 
 # SYNC IMPACT REPORT
 
-Version Change: 1.1.0 → 1.2.0 (MINOR - Added mobile responsiveness principle, strengthened incremental development)
+Version Change: 1.2.0 → 1.3.0 (MINOR - Added LlamaIndex tutorial-specific principles)
 
 Modified Principles:
-- Principle VI. 增量式开发约束: 强化为禁止修改"任何非新增文件"（原仅限教学文档）
-- Principle IX. Mermaid 图表可视化要求: 新增纵向布局优先要求
+- Principle VIII. 通俗易懂文档标准: 扩展添加"深度应用"平衡要求和类比简化强调
+- Principle IX. Mermaid 图表可视化要求: 扩展 RAG 检索流等 LlamaIndex 特定场景
 
 Added Sections:
-- Principle X. 移动端自适应要求 (Mobile Responsive Design Requirement)
+- Principle XI. LlamaIndex 教程特定要求 (LlamaIndex Tutorial-Specific Requirements)
+- Principle XII. API 版本与代码验证要求 (API Version and Code Validation Requirements)
 
 Removed Sections: None
 
@@ -117,18 +118,20 @@ Follow-up TODOs: None
 
 ### VIII. 通俗易懂文档标准
 
-文档语言 MUST 通俗易懂，专门针对零基础受众。
+文档语言 MUST 通俗易懂，专门针对零基础受众，同时保持"通俗易懂"与"深度应用"的平衡。
 
 具体要求：
 
 - MUST 避免使用未经解释的专业术语
 - 首次出现的技术术语 MUST 配有简明的中文解释或类比说明
 - MUST 使用日常语言和生活化的类比来解释抽象概念
+- MUST 大量使用比喻简化复杂概念（如将向量数据库比作"图书馆索引系统"）
 - 代码示例 MUST 配有逐行注释或步骤说明
 - 每个章节 SHOULD 以简单的概念引入开始，逐步深入复杂内容
 - MUST 避免假设读者具有先验知识（如"你应该已经知道..."）
+- 深度应用部分 SHOULD 在基础概念讲解后提供进阶实践指导
 
-**理由**: 本项目面向零基础学习者，确保所有内容对初学者友好，降低学习门槛。
+**理由**: 本项目面向零基础学习者，确保所有内容对初学者友好，降低学习门槛，同时不牺牲内容的实用深度。
 
 ### IX. Mermaid 图表可视化要求
 
@@ -140,13 +143,15 @@ Follow-up TODOs: None
 - 涉及状态变化的概念 MUST 使用状态图（stateDiagram）
 - 涉及组件关系（如网络模型、架构图）的概念 MUST 使用架构图或序列图
 - 涉及数据流向的概念 MUST 使用数据流图或序列图（sequenceDiagram）
+- **RAG 检索流程 MUST 使用流程图清晰展示：查询 → Embedding → 向量检索 → 上下文组装 → LLM 生成**
+- **LlamaIndex 核心组件交互 MUST 使用序列图展示调用关系**
 - Mermaid 图表 MUST 配有文字说明，解释图表中的关键节点和连接
 - 图表 SHOULD 保持简洁，单个图表节点数量 SHOULD NOT 超过 15 个
 - 复杂概念 SHOULD 拆分为多个简化图表，分步解释
 - **Mermaid 图表 MUST 优先使用纵向布局（TB/TD 方向），以确保移动端阅读体验**
 - 横向布局（LR 方向）仅在纵向布局严重影响可读性时使用
 
-**理由**: 可视化是帮助零基础学习者理解复杂概念的关键工具，图文结合能显著提升学习效率。纵向布局在窄屏设备上具有更好的可读性。
+**理由**: 可视化是帮助零基础学习者理解复杂概念的关键工具，图文结合能显著提升学习效率。纵向布局在窄屏设备上具有更好的可读性。RAG 等 LLM 应用概念较为抽象，图表化能极大降低理解门槛。
 
 ### X. 移动端自适应要求
 
@@ -178,6 +183,56 @@ Follow-up TODOs: None
 - 文字行宽 SHOULD 控制在 45-75 字符以确保可读性
 
 **理由**: 大量用户通过手机访问学习文档，良好的移动端体验是用户留存和学习效果的关键。
+
+### XI. LlamaIndex 教程特定要求
+
+LlamaIndex 中文教程 MUST 遵循以下特定原则，确保教程质量和实用性。
+
+**目录结构一致性**:
+- 新增 LlamaIndex 教程内容 MUST 与现有 VitePress 目录结构保持高度一致
+- 教程章节组织 SHOULD 遵循：概念介绍 → 快速开始 → 核心组件 → 实战案例 → 进阶应用
+- 文件命名 MUST 使用小写字母和连字符（如 `rag-basics.md`）
+
+**核心概念覆盖**:
+- MUST 涵盖 LlamaIndex 核心概念：文档加载（Document Loaders）、索引（Index）、查询引擎（Query Engine）、检索器（Retriever）
+- MUST 讲解 RAG（检索增强生成）的基本原理和实现
+- SHOULD 包含与不同 LLM 后端（OpenAI、本地模型）的集成示例
+
+**类比与比喻要求**:
+- 向量数据库 SHOULD 比喻为"图书馆的索引卡片系统"
+- Embedding SHOULD 比喻为"将文字转化为计算机能理解的坐标位置"
+- RAG SHOULD 比喻为"考试前查阅笔记再作答"
+- Query Engine SHOULD 比喻为"智能问答助手"
+- MUST 在首次引入抽象概念时提供生活化类比
+
+**理由**: LlamaIndex 涉及较多 LLM 领域专业概念，需要通过结构化的教程组织和大量类比来降低零基础学习者的入门难度。
+
+### XII. API 版本与代码验证要求
+
+所有代码示例 MUST 经过验证，确保在当前最新 API 版本下可正常运行。
+
+具体要求：
+
+**版本明确性**:
+- 每个代码示例 MUST 在开头注明适用的 LlamaIndex 版本（如 `# LlamaIndex v0.10.x`）
+- 当 API 发生 Breaking Changes 时，MUST 在文档中注明版本差异
+- SHOULD 提供版本兼容性说明（如"此代码适用于 v0.10+ 版本"）
+
+**代码验证**:
+- 所有代码示例 MUST 经过实际运行验证
+- MUST NOT 包含已废弃（deprecated）的 API 调用
+- 异步/同步 API 差异 MUST 明确说明
+
+**生产级参考价值**:
+- 代码示例 SHOULD 展示生产环境的最佳实践（如错误处理、日志记录）
+- SHOULD 包含性能优化提示（如批量处理、缓存策略）
+- 复杂示例 SHOULD 包含注释说明为什么这样写
+
+**依赖说明**:
+- MUST 在教程开头列出所有必要的依赖包及其版本
+- SHOULD 提供 `requirements.txt` 或 `pyproject.toml` 参考
+
+**理由**: LlamaIndex 框架更新频繁，过时的代码示例会严重影响学习体验。确保代码可运行、符合最新 API 规范是教程实用性的基本保障。
 
 ## File System Constraints
 
@@ -226,6 +281,17 @@ Follow-up TODOs: None
 - [ ] 是否避免了未解释的专业术语？
 - [ ] 宽表格是否支持移动端横向滚动？
 - [ ] 长代码块是否在移动端可正常查看？
+
+### LlamaIndex 教程文档化清单
+
+撰写 LlamaIndex 相关文档时 MUST 额外完成以下检查：
+
+- [ ] 是否标注了适用的 LlamaIndex 版本？
+- [ ] 代码示例是否经过实际运行验证？
+- [ ] 是否使用了最新的非废弃 API？
+- [ ] RAG 等核心流程是否有流程图说明？
+- [ ] 抽象概念是否有生活化类比？
+- [ ] 是否提供了依赖包版本说明？
 
 ## Development Workflow
 
@@ -280,4 +346,4 @@ Follow-up TODOs: None
 
 所有代码审查和 PR 合并 MUST 验证是否符合本宪法规定的原则。
 
-**Version**: 1.2.0 | **Ratified**: 2025-11-26 | **Last Amended**: 2025-12-15
+**Version**: 1.3.0 | **Ratified**: 2025-11-26 | **Last Amended**: 2025-12-29

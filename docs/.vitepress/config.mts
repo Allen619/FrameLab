@@ -17,7 +17,10 @@ export default withMermaid(
         },
         {
           text: 'AI',
-          items: [{ text: 'LangChain', link: '/ai/langchain/' }],
+          items: [
+            { text: 'LangChain', link: '/ai/langchain/' },
+            { text: 'LlamaIndex', link: '/ai/llamaindex/' },
+          ],
         },
         {
           text: '运维',
@@ -320,6 +323,38 @@ export default withMermaid(
           {
             text: '迁移',
             items: [{ text: 'Legacy 迁移指南', link: '/ai/langchain/guide/legacy-migration' }],
+          },
+        ],
+
+        '/ai/llamaindex/': [
+          {
+            text: '基础',
+            items: [
+              { text: '环境搭建', link: '/ai/llamaindex/guide/getting-started' },
+              { text: 'RAG 基础', link: '/ai/llamaindex/guide/rag-basics' },
+              { text: '数据加载', link: '/ai/llamaindex/guide/data-connectors' },
+              { text: '索引构建', link: '/ai/llamaindex/guide/index-building' },
+            ],
+          },
+          {
+            text: '进阶',
+            items: [
+              { text: '查询引擎', link: '/ai/llamaindex/guide/query-engine' },
+              { text: 'Agent 基础', link: '/ai/llamaindex/guide/agent-basics' },
+              { text: 'Agent 进阶', link: '/ai/llamaindex/guide/agent-advanced' },
+            ],
+          },
+          {
+            text: '进阶应用',
+            collapsed: false,
+            items: [
+              { text: '向量数据库选型', link: '/ai/llamaindex/guide/vector-databases' },
+              { text: '多模态 RAG', link: '/ai/llamaindex/guide/multimodal-rag' },
+            ],
+          },
+          {
+            text: '生产',
+            items: [{ text: '部署与优化', link: '/ai/llamaindex/guide/production' }],
           },
         ],
 
