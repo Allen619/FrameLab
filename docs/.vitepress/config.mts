@@ -20,6 +20,7 @@ export default withMermaid(
           items: [
             { text: 'LangChain', link: '/ai/langchain/' },
             { text: 'LlamaIndex', link: '/ai/llamaindex/' },
+            { text: 'Instructor', link: '/ai/instructor/' },
           ],
         },
         {
@@ -118,93 +119,192 @@ export default withMermaid(
                     text: '文件与系统',
                     collapsed: true,
                     items: [
-                      { text: 'os/sys 系统接口', link: '/backend/python/libraries/stdlib/file-system/os-sys' },
-                      { text: '🔥 pathlib 路径操作', link: '/backend/python/libraries/stdlib/file-system/pathlib' },
-                      { text: 'shutil 文件操作', link: '/backend/python/libraries/stdlib/file-system/shutil' },
-                      { text: '🔥 subprocess 子进程', link: '/backend/python/libraries/stdlib/file-system/subprocess' },
+                      {
+                        text: 'os/sys 系统接口',
+                        link: '/backend/python/libraries/stdlib/file-system/os-sys',
+                      },
+                      {
+                        text: '🔥 pathlib 路径操作',
+                        link: '/backend/python/libraries/stdlib/file-system/pathlib',
+                      },
+                      {
+                        text: 'shutil 文件操作',
+                        link: '/backend/python/libraries/stdlib/file-system/shutil',
+                      },
+                      {
+                        text: '🔥 subprocess 子进程',
+                        link: '/backend/python/libraries/stdlib/file-system/subprocess',
+                      },
                     ],
                   },
                   {
                     text: '文本与数据',
                     collapsed: true,
                     items: [
-                      { text: '🔥 re 正则表达式', link: '/backend/python/libraries/stdlib/text-data/re' },
-                      { text: '🔥 json 数据格式', link: '/backend/python/libraries/stdlib/text-data/json' },
-                      { text: 'csv 表格处理', link: '/backend/python/libraries/stdlib/text-data/csv' },
-                      { text: 'string 字符串工具', link: '/backend/python/libraries/stdlib/text-data/string' },
-                      { text: 'pickle 序列化', link: '/backend/python/libraries/stdlib/text-data/pickle' },
+                      {
+                        text: '🔥 re 正则表达式',
+                        link: '/backend/python/libraries/stdlib/text-data/re',
+                      },
+                      {
+                        text: '🔥 json 数据格式',
+                        link: '/backend/python/libraries/stdlib/text-data/json',
+                      },
+                      {
+                        text: 'csv 表格处理',
+                        link: '/backend/python/libraries/stdlib/text-data/csv',
+                      },
+                      {
+                        text: 'string 字符串工具',
+                        link: '/backend/python/libraries/stdlib/text-data/string',
+                      },
+                      {
+                        text: 'pickle 序列化',
+                        link: '/backend/python/libraries/stdlib/text-data/pickle',
+                      },
                     ],
                   },
                   {
                     text: '数学与随机',
                     collapsed: true,
                     items: [
-                      { text: 'math 数学函数', link: '/backend/python/libraries/stdlib/math-random/math' },
-                      { text: 'random 随机数', link: '/backend/python/libraries/stdlib/math-random/random' },
-                      { text: 'statistics 统计', link: '/backend/python/libraries/stdlib/math-random/statistics' },
-                      { text: 'decimal 精确计算', link: '/backend/python/libraries/stdlib/math-random/decimal' },
+                      {
+                        text: 'math 数学函数',
+                        link: '/backend/python/libraries/stdlib/math-random/math',
+                      },
+                      {
+                        text: 'random 随机数',
+                        link: '/backend/python/libraries/stdlib/math-random/random',
+                      },
+                      {
+                        text: 'statistics 统计',
+                        link: '/backend/python/libraries/stdlib/math-random/statistics',
+                      },
+                      {
+                        text: 'decimal 精确计算',
+                        link: '/backend/python/libraries/stdlib/math-random/decimal',
+                      },
                     ],
                   },
                   {
                     text: '日期与时间',
                     collapsed: true,
                     items: [
-                      { text: '🔥 datetime 日期时间', link: '/backend/python/libraries/stdlib/datetime/datetime' },
-                      { text: 'time 时间函数', link: '/backend/python/libraries/stdlib/datetime/time' },
-                      { text: 'calendar 日历', link: '/backend/python/libraries/stdlib/datetime/calendar' },
+                      {
+                        text: '🔥 datetime 日期时间',
+                        link: '/backend/python/libraries/stdlib/datetime/datetime',
+                      },
+                      {
+                        text: 'time 时间函数',
+                        link: '/backend/python/libraries/stdlib/datetime/time',
+                      },
+                      {
+                        text: 'calendar 日历',
+                        link: '/backend/python/libraries/stdlib/datetime/calendar',
+                      },
                     ],
                   },
                   {
                     text: '数据结构增强',
                     collapsed: true,
                     items: [
-                      { text: '🔥 collections 容器', link: '/backend/python/libraries/stdlib/collections/collections' },
-                      { text: 'itertools 迭代器', link: '/backend/python/libraries/stdlib/collections/itertools' },
-                      { text: 'functools 函数工具', link: '/backend/python/libraries/stdlib/collections/functools' },
-                      { text: 'enum 枚举', link: '/backend/python/libraries/stdlib/collections/enum' },
+                      {
+                        text: '🔥 collections 容器',
+                        link: '/backend/python/libraries/stdlib/collections/collections',
+                      },
+                      {
+                        text: 'itertools 迭代器',
+                        link: '/backend/python/libraries/stdlib/collections/itertools',
+                      },
+                      {
+                        text: 'functools 函数工具',
+                        link: '/backend/python/libraries/stdlib/collections/functools',
+                      },
+                      {
+                        text: 'enum 枚举',
+                        link: '/backend/python/libraries/stdlib/collections/enum',
+                      },
                     ],
                   },
                   {
                     text: '开发工具',
                     collapsed: true,
                     items: [
-                      { text: 'argparse 命令行', link: '/backend/python/libraries/stdlib/dev-tools/argparse' },
-                      { text: 'unittest 单元测试', link: '/backend/python/libraries/stdlib/dev-tools/unittest' },
+                      {
+                        text: 'argparse 命令行',
+                        link: '/backend/python/libraries/stdlib/dev-tools/argparse',
+                      },
+                      {
+                        text: 'unittest 单元测试',
+                        link: '/backend/python/libraries/stdlib/dev-tools/unittest',
+                      },
                     ],
                   },
                   {
                     text: '并发编程',
                     collapsed: true,
                     items: [
-                      { text: 'threading 线程', link: '/backend/python/libraries/stdlib/concurrency/threading' },
-                      { text: 'multiprocessing 多进程', link: '/backend/python/libraries/stdlib/concurrency/multiprocessing' },
-                      { text: 'concurrent.futures', link: '/backend/python/libraries/stdlib/concurrency/concurrent-futures' },
+                      {
+                        text: 'threading 线程',
+                        link: '/backend/python/libraries/stdlib/concurrency/threading',
+                      },
+                      {
+                        text: 'multiprocessing 多进程',
+                        link: '/backend/python/libraries/stdlib/concurrency/multiprocessing',
+                      },
+                      {
+                        text: 'concurrent.futures',
+                        link: '/backend/python/libraries/stdlib/concurrency/concurrent-futures',
+                      },
                     ],
                   },
                   {
                     text: '网络编程',
                     collapsed: true,
                     items: [
-                      { text: 'urllib URL处理', link: '/backend/python/libraries/stdlib/networking/urllib' },
-                      { text: 'socket 套接字', link: '/backend/python/libraries/stdlib/networking/socket' },
-                      { text: 'http.server', link: '/backend/python/libraries/stdlib/networking/http-server' },
+                      {
+                        text: 'urllib URL处理',
+                        link: '/backend/python/libraries/stdlib/networking/urllib',
+                      },
+                      {
+                        text: 'socket 套接字',
+                        link: '/backend/python/libraries/stdlib/networking/socket',
+                      },
+                      {
+                        text: 'http.server',
+                        link: '/backend/python/libraries/stdlib/networking/http-server',
+                      },
                     ],
                   },
                   {
                     text: '数据存储',
                     collapsed: true,
                     items: [
-                      { text: 'sqlite3 数据库', link: '/backend/python/libraries/stdlib/storage/sqlite3' },
+                      {
+                        text: 'sqlite3 数据库',
+                        link: '/backend/python/libraries/stdlib/storage/sqlite3',
+                      },
                     ],
                   },
                   {
                     text: '工具函数',
                     collapsed: true,
                     items: [
-                      { text: 'hashlib 哈希', link: '/backend/python/libraries/stdlib/utilities/hashlib' },
-                      { text: 'base64 编码', link: '/backend/python/libraries/stdlib/utilities/base64' },
-                      { text: 'copy 拷贝', link: '/backend/python/libraries/stdlib/utilities/copy' },
-                      { text: 'contextlib 上下文', link: '/backend/python/libraries/stdlib/utilities/contextlib' },
+                      {
+                        text: 'hashlib 哈希',
+                        link: '/backend/python/libraries/stdlib/utilities/hashlib',
+                      },
+                      {
+                        text: 'base64 编码',
+                        link: '/backend/python/libraries/stdlib/utilities/base64',
+                      },
+                      {
+                        text: 'copy 拷贝',
+                        link: '/backend/python/libraries/stdlib/utilities/copy',
+                      },
+                      {
+                        text: 'contextlib 上下文',
+                        link: '/backend/python/libraries/stdlib/utilities/contextlib',
+                      },
                     ],
                   },
                 ],
@@ -218,26 +318,47 @@ export default withMermaid(
                     text: 'Web 框架',
                     collapsed: true,
                     items: [
-                      { text: '⭐ FastAPI', link: '/backend/python/libraries/third-party/web/fastapi' },
+                      {
+                        text: '⭐ FastAPI',
+                        link: '/backend/python/libraries/third-party/web/fastapi',
+                      },
                       { text: 'Flask', link: '/backend/python/libraries/third-party/web/flask' },
-                      { text: 'Django 概述', link: '/backend/python/libraries/third-party/web/django-overview' },
-                      { text: '⭐ Pydantic', link: '/backend/python/libraries/third-party/web/pydantic' },
+                      {
+                        text: 'Django 概述',
+                        link: '/backend/python/libraries/third-party/web/django-overview',
+                      },
+                      {
+                        text: '⭐ Pydantic',
+                        link: '/backend/python/libraries/third-party/web/pydantic',
+                      },
                     ],
                   },
                   {
                     text: 'HTTP 客户端',
                     collapsed: true,
                     items: [
-                      { text: 'requests', link: '/backend/python/libraries/third-party/http/requests' },
-                      { text: '⭐ httpx', link: '/backend/python/libraries/third-party/http/httpx' },
-                      { text: 'aiohttp', link: '/backend/python/libraries/third-party/http/aiohttp' },
+                      {
+                        text: 'requests',
+                        link: '/backend/python/libraries/third-party/http/requests',
+                      },
+                      {
+                        text: '⭐ httpx',
+                        link: '/backend/python/libraries/third-party/http/httpx',
+                      },
+                      {
+                        text: 'aiohttp',
+                        link: '/backend/python/libraries/third-party/http/aiohttp',
+                      },
                     ],
                   },
                   {
                     text: '数据处理',
                     collapsed: true,
                     items: [
-                      { text: '⭐ pandas', link: '/backend/python/libraries/third-party/data/pandas' },
+                      {
+                        text: '⭐ pandas',
+                        link: '/backend/python/libraries/third-party/data/pandas',
+                      },
                       { text: 'numpy', link: '/backend/python/libraries/third-party/data/numpy' },
                       { text: 'polars', link: '/backend/python/libraries/third-party/data/polars' },
                     ],
@@ -246,18 +367,36 @@ export default withMermaid(
                     text: '数据库',
                     collapsed: true,
                     items: [
-                      { text: '⭐ SQLAlchemy', link: '/backend/python/libraries/third-party/database/sqlalchemy' },
-                      { text: 'PyMongo', link: '/backend/python/libraries/third-party/database/pymongo' },
-                      { text: 'redis-py', link: '/backend/python/libraries/third-party/database/redis-py' },
+                      {
+                        text: '⭐ SQLAlchemy',
+                        link: '/backend/python/libraries/third-party/database/sqlalchemy',
+                      },
+                      {
+                        text: 'PyMongo',
+                        link: '/backend/python/libraries/third-party/database/pymongo',
+                      },
+                      {
+                        text: 'redis-py',
+                        link: '/backend/python/libraries/third-party/database/redis-py',
+                      },
                     ],
                   },
                   {
                     text: '测试',
                     collapsed: true,
                     items: [
-                      { text: '⭐ pytest', link: '/backend/python/libraries/third-party/testing/pytest' },
-                      { text: 'pytest-mock', link: '/backend/python/libraries/third-party/testing/pytest-mock' },
-                      { text: 'coverage', link: '/backend/python/libraries/third-party/testing/coverage' },
+                      {
+                        text: '⭐ pytest',
+                        link: '/backend/python/libraries/third-party/testing/pytest',
+                      },
+                      {
+                        text: 'pytest-mock',
+                        link: '/backend/python/libraries/third-party/testing/pytest-mock',
+                      },
+                      {
+                        text: 'coverage',
+                        link: '/backend/python/libraries/third-party/testing/coverage',
+                      },
                     ],
                   },
                   {
@@ -273,8 +412,14 @@ export default withMermaid(
                     text: '配置管理',
                     collapsed: true,
                     items: [
-                      { text: '⭐ python-dotenv', link: '/backend/python/libraries/third-party/config/python-dotenv' },
-                      { text: 'PyYAML', link: '/backend/python/libraries/third-party/config/pyyaml' },
+                      {
+                        text: '⭐ python-dotenv',
+                        link: '/backend/python/libraries/third-party/config/python-dotenv',
+                      },
+                      {
+                        text: 'PyYAML',
+                        link: '/backend/python/libraries/third-party/config/pyyaml',
+                      },
                       { text: 'toml', link: '/backend/python/libraries/third-party/config/toml' },
                     ],
                   },
@@ -355,6 +500,41 @@ export default withMermaid(
           {
             text: '生产',
             items: [{ text: '部署与优化', link: '/ai/llamaindex/guide/production' }],
+          },
+        ],
+
+        '/ai/instructor/': [
+          {
+            text: '基础',
+            items: [
+              { text: '简介', link: '/ai/instructor/' },
+              { text: '⭐ 快速开始', link: '/ai/instructor/quick-start' },
+              { text: '⭐ 核心概念', link: '/ai/instructor/concepts' },
+            ],
+          },
+          {
+            text: '进阶指南',
+            items: [
+              { text: '⭐ 流式传输 (Streaming)', link: '/ai/instructor/guides/streaming' },
+              { text: '处理列表 (Iterables)', link: '/ai/instructor/guides/iterable' },
+              { text: 'Hooks 与调试', link: '/ai/instructor/guides/hooks' },
+              { text: 'Patching 原理', link: '/ai/instructor/guides/patching' },
+            ],
+          },
+          {
+            text: '多模型集成',
+            items: [
+              { text: '⭐ 主流模型集成', link: '/ai/instructor/integrations/providers' },
+              { text: '本地模型 (Ollama)', link: '/ai/instructor/integrations/local-llm' },
+            ],
+          },
+          {
+            text: '实战手册',
+            items: [
+              { text: '⭐ 文本分类', link: '/ai/instructor/cookbook/classification' },
+              { text: '复杂实体提取', link: '/ai/instructor/cookbook/extraction' },
+              { text: 'RAG 增强', link: '/ai/instructor/cookbook/rag' },
+            ],
           },
         ],
 

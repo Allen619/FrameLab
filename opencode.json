@@ -1,0 +1,250 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "plugin": ["opencode-antigravity-auth@latest"],
+  "provider": {
+    "modelscope-gpt-load": {
+      "name": "modelscope-gpt-load",
+      "options": {
+        "baseURL": "http://localhost:7023/proxy/my-modelscope/v1",
+        "apiKey": "sk-1BnZuHBypNpLS2FhemcbJcIpNn0VBa1i0BS4iVUmotTY2po2"
+      },
+      "models": {
+        "ZhipuAI/GLM-4.7": {
+          "name": "ZhipuAI/GLM-4.7",
+          "limit": {
+            "context": 202752,
+            "output": 65536
+          }
+        },
+        "deepseek-ai/DeepSeek-V3.2": {
+          "name": "deepseek-ai/DeepSeek-V3.2",
+          "limit": {
+            "context": 163840,
+            "output": 65536
+          }
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "moonshotai/kimi-k2.5",
+          "limit": {
+            "context": 262144,
+            "output": 262144
+          }
+        }
+      }
+    },
+    "nvidia-gpt-load": {
+      "name": "nvidia-gpt-load",
+      "options": {
+        "baseURL": "http://localhost:7023/proxy/nvidia/v1",
+        "apiKey": "sk-Oplv9YkvYfj_FSYofF6Emx2m7disDTQdsKGPqnfCLkt706au"
+      },
+      "models": {
+        "z-ai/glm4.7": {
+          "name": "z-ai/glm4.7",
+          "limit": {
+            "context": 202752,
+            "output": 65536
+          }
+        },
+        "minimaxai/minimax-m2": {
+          "name": "minimaxai/minimax-m2",
+          "limit": {
+            "context": 196608,
+            "output": 65536
+          }
+        },
+        "moonshotai/kimi-k2.5": {
+          "name": "moonshotai/kimi-k2.5",
+          "limit": {
+            "context": 262144,
+            "output": 262144
+          }
+        }
+      }
+    },
+    "glm-all-gpt-load": {
+      "name": "glm-all-gpt-load",
+      "options": {
+        "baseURL": "http://localhost:7023/proxy/glm-all/v1",
+        "apiKey": "sk-4n45MsK7qClOH1rQ7laFnQ78cegaK7PCjMq2hLXWZaZTyxaj"
+      },
+      "models": {
+        "ZhipuAI/GLM-4.7": {
+          "name": "ZhipuAI/GLM-4.7",
+          "limit": {
+            "context": 202752,
+            "output": 65536
+          }
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "moonshotai/kimi-k2.5",
+          "limit": {
+            "context": 262144,
+            "output": 262144
+          }
+        }
+      }
+    },
+    "anyrouter": {
+      "npm": "@ai-sdk/anthropic",
+      "name": "anyrouter-claude-oups-4-6",
+      "options": {
+        "baseURL": "https://anyrouter.top/v1",
+        "apiKey": "sk-4n45MsK7qClOH1rQ7laFnQ78cegaK7PCjMq2hLXWZaZTyxaj"
+      },
+      "models": {
+        "ZhipuAI/GLM-4.7": {
+          "name": "ZhipuAI/GLM-4.7",
+          "limit": {
+            "context": 202752,
+            "output": 65536
+          }
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "moonshotai/kimi-k2.5",
+          "limit": {
+            "context": 262144,
+            "output": 262144
+          }
+        }
+      }
+    },
+    "google": {
+      "models": {
+        "antigravity-gemini-3-pro": {
+          "name": "Gemini 3 Pro (Antigravity)",
+          "limit": {
+            "context": 1048576,
+            "output": 65535
+          },
+          "modalities": {
+            "input": ["text", "image", "pdf"],
+            "output": ["text"]
+          },
+          "variants": {
+            "low": {
+              "thinkingLevel": "low"
+            },
+            "high": {
+              "thinkingLevel": "high"
+            }
+          }
+        },
+        "antigravity-gemini-3-flash": {
+          "name": "Gemini 3 Flash (Antigravity)",
+          "limit": {
+            "context": 1048576,
+            "output": 65536
+          },
+          "modalities": {
+            "input": ["text", "image", "pdf"],
+            "output": ["text"]
+          },
+          "variants": {
+            "minimal": {
+              "thinkingLevel": "minimal"
+            },
+            "low": {
+              "thinkingLevel": "low"
+            },
+            "medium": {
+              "thinkingLevel": "medium"
+            },
+            "high": {
+              "thinkingLevel": "high"
+            }
+          }
+        },
+        "antigravity-claude-sonnet-4-5": {
+          "name": "Claude Sonnet 4.5 (Antigravity)",
+          "limit": {
+            "context": 200000,
+            "output": 64000
+          },
+          "modalities": {
+            "input": ["text", "image", "pdf"],
+            "output": ["text"]
+          }
+        },
+        "antigravity-claude-sonnet-4-5-thinking": {
+          "name": "Claude Sonnet 4.5 Thinking (Antigravity)",
+          "limit": {
+            "context": 200000,
+            "output": 64000
+          },
+          "modalities": {
+            "input": ["text", "image", "pdf"],
+            "output": ["text"]
+          },
+          "variants": {
+            "low": {
+              "thinkingConfig": {
+                "thinkingBudget": 8192
+              }
+            },
+            "max": {
+              "thinkingConfig": {
+                "thinkingBudget": 32768
+              }
+            }
+          }
+        },
+        "antigravity-claude-opus-4-5-thinking": {
+          "name": "Claude Opus 4.5 Thinking (Antigravity)",
+          "limit": {
+            "context": 200000,
+            "output": 64000
+          },
+          "modalities": {
+            "input": ["text", "image", "pdf"],
+            "output": ["text"]
+          },
+          "variants": {
+            "low": {
+              "thinkingConfig": {
+                "thinkingBudget": 8192
+              }
+            },
+            "max": {
+              "thinkingConfig": {
+                "thinkingBudget": 32768
+              }
+            }
+          }
+        },
+        "gemini-3-pro-preview": {
+          "name": "Gemini 3 Pro Preview (Gemini CLI)",
+          "limit": {
+            "context": 1048576,
+            "output": 65535
+          },
+          "modalities": {
+            "input": ["text", "image", "pdf"],
+            "output": ["text"]
+          }
+        }
+      }
+    }
+  },
+  "mcp": {
+    "context7": {
+      "type": "remote",
+      "url": "https://mcp.context7.com/mcp",
+      "headers": {
+        "CONTEXT7_API_KEY": "ctx7sk-38109a42-eafa-41e2-9178-6fa8aa0278fd"
+      }
+    },
+    "playwright": {
+      "type": "local",
+      "command": ["npx", "-y", "@playwright/mcp@latest"]
+    },
+    "tavily-mcp": {
+      "type": "local",
+      "command": ["npx", "-y", "tavily-mcp@0.1.4"],
+      "environment": {
+        "TAVILY_API_KEY": "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"
+      },
+      "enabled": false
+    }
+  }
+}
