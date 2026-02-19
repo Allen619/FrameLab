@@ -423,6 +423,16 @@ export default withMermaid(
                       { text: 'toml', link: '/backend/python/libraries/third-party/config/toml' },
                     ],
                   },
+                  {
+                    text: '任务调度',
+                    collapsed: true,
+                    items: [
+                      {
+                        text: '⭐ APScheduler',
+                        link: '/backend/python/libraries/third-party/scheduling/apscheduler',
+                      },
+                    ],
+                  },
                 ],
               },
             ],

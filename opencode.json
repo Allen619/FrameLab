@@ -9,6 +9,13 @@
         "apiKey": "sk-1BnZuHBypNpLS2FhemcbJcIpNn0VBa1i0BS4iVUmotTY2po2"
       },
       "models": {
+        "ZhipuAI/GLM-5": {
+          "name": "ZhipuAI/GLM-5",
+          "limit": {
+            "context": 202752,
+            "output": 202752
+          }
+        },
         "ZhipuAI/GLM-4.7": {
           "name": "ZhipuAI/GLM-4.7",
           "limit": {
@@ -39,6 +46,13 @@
         "apiKey": "sk-Oplv9YkvYfj_FSYofF6Emx2m7disDTQdsKGPqnfCLkt706au"
       },
       "models": {
+        "z-ai/glm5": {
+          "name": "z-ai/glm5",
+          "limit": {
+            "context": 202752,
+            "output": 202752
+          }
+        },
         "z-ai/glm4.7": {
           "name": "z-ai/glm4.7",
           "limit": {
@@ -69,6 +83,13 @@
         "apiKey": "sk-4n45MsK7qClOH1rQ7laFnQ78cegaK7PCjMq2hLXWZaZTyxaj"
       },
       "models": {
+        "ZhipuAI/GLM-5": {
+          "name": "ZhipuAI/GLM-5",
+          "limit": {
+            "context": 202752,
+            "output": 202752
+          }
+        },
         "ZhipuAI/GLM-4.7": {
           "name": "ZhipuAI/GLM-4.7",
           "limit": {

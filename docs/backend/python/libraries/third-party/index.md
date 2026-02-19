@@ -22,19 +22,20 @@ uv add requests
 
 ## 第三方库 vs npm 包
 
-| Python 库 | npm 对应 | 用途 |
-|----------|---------|------|
-| `requests` / `httpx` | `axios` / `fetch` | HTTP 客户端 |
-| `FastAPI` / `Flask` | `Express` / `Koa` | Web 框架 |
-| `pytest` | `Jest` / `Vitest` | 测试框架 |
-| `pandas` | `danfojs` | 数据处理 |
-| `SQLAlchemy` | `Prisma` / `TypeORM` | ORM |
-| `click` / `typer` | `commander` / `yargs` | CLI 工具 |
-| `pydantic` | `zod` / `joi` | 数据验证 |
+| Python 库            | npm 对应              | 用途        |
+| -------------------- | --------------------- | ----------- |
+| `requests` / `httpx` | `axios` / `fetch`     | HTTP 客户端 |
+| `FastAPI` / `Flask`  | `Express` / `Koa`     | Web 框架    |
+| `pytest`             | `Jest` / `Vitest`     | 测试框架    |
+| `pandas`             | `danfojs`             | 数据处理    |
+| `SQLAlchemy`         | `Prisma` / `TypeORM`  | ORM         |
+| `click` / `typer`    | `commander` / `yargs` | CLI 工具    |
+| `pydantic`           | `zod` / `joi`         | 数据验证    |
 
 ## 分类导航
 
 ### Web 框架
+
 构建 Web 应用和 API 的框架。
 
 - [FastAPI](./web/fastapi.md) - 现代高性能 API 框架
@@ -43,6 +44,7 @@ uv add requests
 - [Pydantic](./web/pydantic.md) - 数据验证和设置管理
 
 ### HTTP 客户端
+
 发送 HTTP 请求的库。
 
 - [requests](./http/requests.md) - 最流行的 HTTP 库
@@ -50,6 +52,7 @@ uv add requests
 - [aiohttp](./http/aiohttp.md) - 异步 HTTP 客户端/服务端框架
 
 ### 数据处理
+
 数据分析和处理的库。
 
 - [pandas](./data/pandas.md) - 数据分析神器
@@ -57,6 +60,7 @@ uv add requests
 - [polars](./data/polars.md) - 高性能 DataFrame 库
 
 ### 数据库
+
 数据库连接和 ORM。
 
 - [SQLAlchemy](./database/sqlalchemy.md) - Python ORM 和数据库工具包
@@ -64,6 +68,7 @@ uv add requests
 - [redis-py](./database/redis-py.md) - Redis Python 客户端
 
 ### 测试
+
 测试框架和工具。
 
 - [pytest](./testing/pytest.md) - Python 测试框架
@@ -71,6 +76,7 @@ uv add requests
 - [coverage](./testing/coverage.md) - 代码覆盖率工具
 
 ### CLI 工具
+
 构建命令行应用的库。
 
 - [click](./cli/click.md) - 命令行接口创建工具
@@ -78,11 +84,18 @@ uv add requests
 - [rich](./cli/rich.md) - 终端富文本渲染
 
 ### 配置管理
+
 配置和环境变量管理。
 
 - [python-dotenv](./config/python-dotenv.md) - 环境变量管理
 - [PyYAML](./config/pyyaml.md) - YAML 解析器
 - [toml](./config/toml.md) - TOML 配置文件处理
+
+### 任务调度
+
+按时间规则执行后台任务。
+
+- [APScheduler](./scheduling/apscheduler.md) - 单页版完整指南（概览、核心概念、快速上手、触发器、作业存储、执行器、排错与最佳实践）
 
 ## 学习建议
 
