@@ -13,6 +13,8 @@ description: Python Web 框架 - FastAPI 和 Flask
 | Flask   | Express              | 轻量、灵活           |
 | Django  | Nest.js              | 全功能框架           |
 
+[🔗 FastAPI 官方文档](https://fastapi.tiangolo.com/){target="_blank" rel="noopener"}
+
 ## FastAPI - 推荐首选
 
 ### 安装

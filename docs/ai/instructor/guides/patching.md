@@ -2,6 +2,8 @@
 
 Patching 是 Instructor 的核心机制，它通过装饰 OpenAI 客户端的方法，将 Pydantic 模型作为 JSON Schema 注入到请求中。
 
+[🔗 Instructor Patching 官方文档](https://python.useinstructor.com/concepts/patching/){target="_blank" rel="noopener"}
+
 ## Patching 工作原理
 
 1.  **Schema 生成**：将 Pydantic `BaseModel` 转换为 JSON Schema (OpenAI Function Calling Format)。

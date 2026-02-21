@@ -12,6 +12,8 @@ description: Python 测试框架 - pytest
 | `pytest`   | Jest / Vitest | 最流行的测试框架 |
 | `unittest` | Mocha         | 内置测试框架     |
 
+[🔗 pytest 官方文档](https://docs.pytest.org/en/stable/){target="_blank" rel="noopener"}
+
 ## pytest - 推荐使用
 
 ### 安装

@@ -1,160 +1,50 @@
 ---
-title: 生产部署
-description: 学习如何将 LangChain 应用部署到生产环境
+title: 部署
+description: 将 LangChain 应用部署到生产环境的完整指南，涵盖 LangServe、Docker、云平台和生产清单
 ---
 
-# 生产部署
+# 部署
 
-## 概述
+## 部署方案概览
 
-将 LangChain 应用从开发环境部署到生产环境，需要考虑性能、安全性、可扩展性等多个方面。LangServe 是 LangChain 官方推荐的部署方案，它基于 FastAPI 构建，提供了开箱即用的 REST API 部署能力。
+将 LangChain Agent 从开发环境部署到生产环境，需要选择合适的部署策略。不同方案在成本、灵活性和运维复杂度之间各有取舍。
 
-### LangServe 是什么？
+::: tip 前端类比
+部署 LangChain Agent 的选择逻辑与部署 Next.js 应用类似：**LangServe** 类似 Next.js 内置的 API Routes（快速上手）；**Docker 容器化** 类似自行打包部署到 VPS；**Cloud Run / Lambda** 则类似 Vercel 的 Serverless Functions。核心考量都是：**运维复杂度 vs 控制力度**。
+:::
 
-LangServe 帮助开发者将 LangChain 的 Runnable 和 Chain 部署为 REST API：
+| 方案 | 适用场景 | 优势 | 劣势 |
+|------|----------|------|------|
+| **FastAPI + LangServe** | 快速原型、中小规模 | 开箱即用、内置 Playground | 需自行部署基础设施 |
+| **Docker 容器** | 团队协作、可重复部署 | 环境一致性、易于 CI/CD | 需要容器编排知识 |
+| **云平台托管** | 生产环境、自动扩缩 | 运维省心、按量付费 | 冷启动延迟、供应商锁定 |
+| **LangSmith 托管** | LangChain 生态深度用户 | 全链路集成 | 目前功能仍在演进中 |
 
-- **自动 API 生成**: 基于 FastAPI，自动生成 OpenAPI 文档
-- **多端点支持**: 同时提供 invoke、stream、batch 等端点
-- **Playground**: 内置可视化测试界面
-- **流式支持**: 原生支持 Server-Sent Events (SSE)
+## FastAPI + LangServe 部署
 
-### 部署架构
+LangServe 是 LangChain 官方的部署方案，基于 FastAPI 构建，提供了开箱即用的 REST API 能力。
 
-```mermaid
-graph TB
-    subgraph "客户端"
-        A[Web 应用] --> B[LangServe Client]
-        C[移动应用] --> B
-    end
-
-    subgraph "服务端"
-        B --> D[FastAPI + LangServe]
-        D --> E[LangChain Agent/Chain]
-        E --> F[LLM API]
-        E --> G[工具/数据库]
-    end
-
-    subgraph "基础设施"
-        D --> H[Docker Container]
-        H --> I[云服务]
-    end
-
-    style D fill:#e1f5ff
-    style H fill:#c8e6c9
-```
-
-## 核心概念
-
-### add_routes 函数
-
-`add_routes` 是 LangServe 的核心函数，用于将 LangChain Runnable 注册为 API 端点：
-
-```python
-from langserve import add_routes
-
-add_routes(
-    app,           # FastAPI 应用实例
-    runnable,      # LangChain Runnable（Chain、Agent 等）
-    path="/api",   # API 路径前缀
-)
-```
-
-注册后，LangServe 会自动创建以下端点：
-
-| 端点                 | 方法 | 描述            |
-| -------------------- | ---- | --------------- |
-| `/api/invoke`        | POST | 同步调用        |
-| `/api/stream`        | POST | 流式调用（SSE） |
-| `/api/batch`         | POST | 批量调用        |
-| `/api/input_schema`  | GET  | 输入 Schema     |
-| `/api/output_schema` | GET  | 输出 Schema     |
-| `/api/playground`    | GET  | 可视化测试界面  |
-
-### RemoteRunnable 客户端
-
-LangServe 提供 Python 客户端，可以像调用本地 Runnable 一样调用远程 API：
-
-```python
-from langserve import RemoteRunnable
-
-# 连接远程服务
-remote = RemoteRunnable("http://localhost:8000/api")
-
-# 同步调用
-result = remote.invoke({"input": "hello"})
-
-# 流式调用
-for chunk in remote.stream({"input": "hello"}):
-    print(chunk)
-```
-
-## 代码示例 1: 基础 LangServe 部署
-
-最简单的 LangServe 部署示例：
-
-```python
-#!/usr/bin/env python
-from fastapi import FastAPI
-from langchain.chat_models import init_chat_model
-from langchain.prompts import ChatPromptTemplate
-from langserve import add_routes
-
-# 创建 FastAPI 应用
-app = FastAPI(
-    title="LangChain API Server",
-    version="1.0",
-    description="基于 LangServe 的 LangChain API 服务",
-)
-
-# 初始化模型
-llm = init_chat_model("claude-sonnet-4-5-20250929")
-
-# 创建简单的 Chain
-prompt = ChatPromptTemplate.from_template("请用中文回答: {question}")
-chain = prompt | llm
-
-# 注册路由
-add_routes(app, chain, path="/chat")
-
-# 启动服务
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
-```
-
-**运行方式**:
-
-```bash
-# 安装依赖
-pip install langserve fastapi uvicorn
-
-# 启动服务
-python server.py
-
-# 访问 API 文档
-# http://localhost:8000/docs
-
-# 访问 Playground
-# http://localhost:8000/chat/playground
-```
-
-## 代码示例 2: 部署 Agent
-
-将完整的 Agent 部署为 API：
+### 创建 API 端点
 
 ```python
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from langchain.agents import create_agent
+from langchain.chat_models import init_chat_model
+from langchain.prompts import ChatPromptTemplate
 from langchain.tools import tool
+from langchain.agents import create_tool_calling_agent, AgentExecutor
 from langserve import add_routes
 
-app = FastAPI(title="Agent API Server")
+app = FastAPI(
+    title="LangChain Agent API",
+    version="1.0.0",
+    description="基于 LangServe 的 Agent API 服务",
+)
 
-# 配置 CORS（允许浏览器访问）
+# 配置 CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["https://yourdomain.com"],  # 生产环境不要用 *
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -162,53 +52,108 @@ app.add_middleware(
 
 # 定义工具
 @tool
-def get_weather(city: str) -> str:
-    """获取城市天气信息"""
-    # 实际应用中调用天气 API
-    return f"{city}今天晴天，气温 25°C"
-
-@tool
-def search_database(query: str) -> str:
-    """搜索数据库"""
-    # 实际应用中查询数据库
-    return f"找到关于 '{query}' 的 5 条记录"
+def search_knowledge(query: str) -> str:
+    """搜索知识库"""
+    # 实际应用中连接向量数据库
+    return f"找到关于 '{query}' 的相关文档 3 篇"
 
 # 创建 Agent
-agent = create_agent(
-    model="claude-sonnet-4-5-20250929",
-    tools=[get_weather, search_database],
-    system_prompt="你是一个智能助手，可以查询天气和搜索数据库。",
-)
+llm = init_chat_model("claude-sonnet-4-5-20250929")
+prompt = ChatPromptTemplate.from_messages([
+    ("system", "你是一个智能助手，可以搜索知识库回答问题。"),
+    ("human", "{input}"),
+    ("placeholder", "{agent_scratchpad}"),
+])
+agent = create_tool_calling_agent(llm, [search_knowledge], prompt)
+executor = AgentExecutor(agent=agent, tools=[search_knowledge])
 
-# 注册 Agent 路由
-add_routes(app, agent, path="/agent")
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+# 注册路由 —— 自动生成 invoke/stream/batch/playground 端点
+add_routes(app, executor, path="/agent")
 ```
 
-**调用示例**:
+注册后自动生成的端点：
+
+| 端点 | 方法 | 描述 |
+|------|------|------|
+| `/agent/invoke` | POST | 同步调用 |
+| `/agent/stream` | POST | SSE 流式调用 |
+| `/agent/batch` | POST | 批量调用 |
+| `/agent/input_schema` | GET | 输入 Schema |
+| `/agent/output_schema` | GET | 输出 Schema |
+| `/agent/playground` | GET | 可视化测试界面 |
+
+### SSE 流式端点
+
+LangServe 内置了 SSE（Server-Sent Events）流式端点，但有时你需要更精细的控制：
 
 ```python
-from langserve import RemoteRunnable
+from fastapi import FastAPI
+from fastapi.responses import StreamingResponse
+from langchain.chat_models import init_chat_model
+from langchain.prompts import ChatPromptTemplate
+import json
 
-agent = RemoteRunnable("http://localhost:8000/agent")
+app = FastAPI()
 
-# 调用 Agent
-result = agent.invoke({
-    "messages": [{"role": "user", "content": "北京天气怎么样？"}]
-})
-print(result)
+llm = init_chat_model("claude-sonnet-4-5-20250929")
+prompt = ChatPromptTemplate.from_template("{input}")
+chain = prompt | llm
 
-# 流式调用
-for chunk in agent.stream({
-    "messages": [{"role": "user", "content": "搜索用户信息"}]
-}):
-    print(chunk)
+@app.post("/chat/stream")
+async def stream_chat(request: dict):
+    """自定义 SSE 流式端点"""
+    async def event_generator():
+        async for chunk in chain.astream({"input": request["input"]}):
+            data = json.dumps({"content": chunk.content}, ensure_ascii=False)
+            yield f"data: {data}\n\n"
+        yield "data: [DONE]\n\n"
+
+    return StreamingResponse(
+        event_generator(),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive",
+        },
+    )
 ```
 
-## 代码示例 3: Docker 容器化
+### 健康检查端点
+
+```python
+from fastapi import FastAPI
+from datetime import datetime
+
+app = FastAPI()
+
+_start_time = datetime.now()
+
+@app.get("/health")
+def health_check():
+    """存活探针 —— 容器是否在运行"""
+    return {"status": "healthy", "timestamp": datetime.now().isoformat()}
+
+@app.get("/ready")
+async def readiness_check():
+    """就绪探针 —— 服务是否可以接受请求"""
+    checks = {}
+    try:
+        # 检查 LLM API 连通性
+        llm = init_chat_model("claude-sonnet-4-5-20250929")
+        await llm.ainvoke("ping")
+        checks["llm_api"] = "ok"
+    except Exception as e:
+        checks["llm_api"] = f"error: {e}"
+
+    all_ok = all(v == "ok" for v in checks.values())
+    return {
+        "status": "ready" if all_ok else "not_ready",
+        "checks": checks,
+        "uptime_seconds": (datetime.now() - _start_time).total_seconds(),
+    }
+```
+
+## Docker 容器化
 
 ### 项目结构
 
@@ -216,340 +161,502 @@ for chunk in agent.stream({
 my-langchain-app/
 ├── app/
 │   ├── __init__.py
-│   └── server.py
+│   ├── server.py           # FastAPI 应用入口
+│   ├── agents/
+│   │   └── chat_agent.py   # Agent 定义
+│   └── tools/
+│       └── search.py       # 工具函数
+├── tests/
+│   ├── test_tools.py
+│   └── test_agent.py
 ├── Dockerfile
 ├── docker-compose.yml
 ├── requirements.txt
-└── .env.example
+├── .env.example
+└── .dockerignore
 ```
 
 ### Dockerfile
 
 ```dockerfile
+# 多阶段构建 —— 减小镜像体积
+FROM python:3.11-slim AS builder
+
+WORKDIR /app
+
+# 安装依赖（利用 Docker 层缓存）
+COPY requirements.txt .
+RUN pip install --no-cache-dir --user -r requirements.txt
+
+# ---- 运行阶段 ----
 FROM python:3.11-slim
 
 WORKDIR /app
 
-# 安装依赖
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# 复制已安装的依赖
+COPY --from=builder /root/.local /root/.local
+ENV PATH=/root/.local/bin:$PATH
 
 # 复制应用代码
 COPY app/ ./app/
 
+# 创建非 root 用户
+RUN useradd --create-home appuser
+USER appuser
+
 # 暴露端口
 EXPOSE 8000
+
+# 健康检查
+HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
+    CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"
 
 # 启动命令
 CMD ["uvicorn", "app.server:app", "--host", "0.0.0.0", "--port", "8000"]
 ```
 
-### requirements.txt
-
-```text
-langchain>=0.3.0
-langchain-anthropic>=0.2.0
-langserve>=0.3.0
-fastapi>=0.100.0
-uvicorn>=0.23.0
-python-dotenv>=1.0.0
-```
-
 ### docker-compose.yml
 
 ```yaml
-version: '3.8'
+version: "3.8"
 
 services:
   langchain-api:
     build: .
     ports:
-      - '8000:8000'
-    environment:
-      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - "8000:8000"
     env_file:
       - .env
+    environment:
+      - LANGSMITH_TRACING=true
+      - LOG_LEVEL=INFO
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: "1.0"
     healthcheck:
-      test: ['CMD', 'curl', '-f', 'http://localhost:8000/docs']
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
       interval: 30s
       timeout: 10s
       retries: 3
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  redis_data:
 ```
 
 ### 构建和运行
 
 ```bash
 # 构建镜像
-docker build -t langchain-api .
+docker build -t langchain-api:latest .
 
-# 运行容器
-docker run -p 8000:8000 --env-file .env langchain-api
+# 运行容器（单独）
+docker run -p 8000:8000 --env-file .env langchain-api:latest
 
-# 或使用 docker-compose
-docker-compose up -d
+# 使用 docker-compose（带 Redis 等依赖）
+docker compose up -d
+
+# 查看日志
+docker compose logs -f langchain-api
+
+# 停止服务
+docker compose down
 ```
 
-## 代码示例 4: 环境变量和 API Key 管理
+### .dockerignore
 
-### 安全的配置管理
+```
+__pycache__
+*.pyc
+.env
+.git
+.gitignore
+tests/
+*.md
+.vscode/
+.idea/
+```
+
+## LangSmith 托管部署
+
+LangSmith 平台提供了托管部署能力（LangServe Cloud），适合深度使用 LangChain 生态的团队：
+
+```bash
+# 使用 LangChain CLI 部署到 LangSmith
+pip install langchain-cli
+
+# 初始化项目
+langchain app new my-app --package pirate-speak
+
+# 部署（需要 LangSmith 账号）
+langchain deploy
+```
+
+详细信息请参考 [LangSmith 部署文档](https://docs.smith.langchain.com/deployment)。
+
+## 环境变量与密钥管理
+
+### 使用 Pydantic Settings
+
+```python
+from pydantic_settings import BaseSettings
+from functools import lru_cache
+
+class Settings(BaseSettings):
+    """应用配置 —— 从环境变量读取"""
+    # LLM API Keys
+    anthropic_api_key: str
+    openai_api_key: str | None = None
+
+    # 应用配置
+    api_key: str                    # 客户端认证 Key
+    log_level: str = "INFO"
+    max_tokens: int = 4096
+    default_model: str = "claude-sonnet-4-5-20250929"
+
+    # LangSmith
+    langsmith_api_key: str | None = None
+    langsmith_tracing: bool = False
+    langsmith_project: str = "default"
+
+    class Config:
+        env_file = ".env"
+
+@lru_cache
+def get_settings() -> Settings:
+    return Settings()
+```
+
+### API Key 认证中间件
 
 ```python
 import os
-from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException, Depends
+from fastapi import FastAPI, HTTPException, Depends, Security
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-
-# 加载环境变量
-load_dotenv()
 
 app = FastAPI()
 security = HTTPBearer()
 
-# 验证 API Key
-def verify_api_key(credentials: HTTPAuthorizationCredentials = Depends(security)):
-    expected_key = os.getenv("API_KEY")
-    if credentials.credentials != expected_key:
-        raise HTTPException(status_code=401, detail="Invalid API Key")
+def verify_api_key(
+    credentials: HTTPAuthorizationCredentials = Security(security),
+) -> str:
+    """验证客户端 API Key"""
+    expected = os.getenv("API_KEY")
+    if not expected or credentials.credentials != expected:
+        raise HTTPException(status_code=401, detail="无效的 API Key")
     return credentials.credentials
 
-# 受保护的端点
-@app.get("/protected")
-def protected_endpoint(api_key: str = Depends(verify_api_key)):
-    return {"message": "访问成功"}
+@app.post("/agent/invoke")
+async def invoke_agent(
+    request: dict,
+    api_key: str = Depends(verify_api_key),
+):
+    """受保护的 Agent 调用端点"""
+    result = executor.invoke(request)
+    return result
 ```
 
 ### .env 文件示例
 
 ```bash
+# .env.example —— 复制为 .env 并填入实际值
 # LLM API Keys
-ANTHROPIC_API_KEY=sk-ant-xxx
-OPENAI_API_KEY=sk-xxx
+ANTHROPIC_API_KEY=sk-ant-xxxxxxxxxxxx
+OPENAI_API_KEY=sk-xxxxxxxxxxxx
+
+# 客户端认证
+API_KEY=your-client-api-key
+
+# LangSmith（可选）
+LANGSMITH_API_KEY=lsv2_pt_xxxxxxxxxxxx
+LANGSMITH_TRACING=true
+LANGSMITH_PROJECT=my-agent
 
 # 应用配置
-API_KEY=your-api-key-for-clients
 LOG_LEVEL=INFO
 MAX_TOKENS=4096
-
-# 数据库（如需要）
-DATABASE_URL=postgresql://user:pass@localhost:5432/db
-```
-
-### 环境变量最佳实践
-
-```python
-from pydantic_settings import BaseSettings
-
-class Settings(BaseSettings):
-    """应用配置"""
-    anthropic_api_key: str
-    openai_api_key: str | None = None
-    api_key: str
-    log_level: str = "INFO"
-    max_tokens: int = 4096
-
-    class Config:
-        env_file = ".env"
-
-# 使用配置
-settings = Settings()
-
-# 在应用中使用
-llm = init_chat_model(
-    "claude-sonnet-4-5-20250929",
-    api_key=settings.anthropic_api_key,
-    max_tokens=settings.max_tokens,
-)
 ```
 
 ## 云平台部署
 
-### AWS 部署 (Copilot CLI)
+### 部署架构
+
+```mermaid
+graph TB
+    subgraph "用户"
+        A[Web / Mobile / API 客户端]
+    end
+
+    subgraph "入口层"
+        B[负载均衡器 / API Gateway]
+    end
+
+    subgraph "计算层"
+        C1[实例 1: Agent API]
+        C2[实例 2: Agent API]
+        C3[实例 N: Agent API]
+    end
+
+    subgraph "外部服务"
+        D[LLM API<br/>Anthropic / OpenAI]
+        E[向量数据库<br/>Pinecone / Weaviate]
+        F[LangSmith<br/>追踪和监控]
+    end
+
+    A --> B
+    B --> C1
+    B --> C2
+    B --> C3
+    C1 --> D
+    C1 --> E
+    C1 --> F
+    C2 --> D
+    C3 --> D
+
+    style B fill:#e1f5ff
+    style C1 fill:#c8e6c9
+    style C2 fill:#c8e6c9
+    style C3 fill:#c8e6c9
+```
+
+### AWS 部署
+
+**方案一：ECS Fargate（推荐）**
 
 ```bash
-# 初始化并部署
+# 使用 AWS Copilot CLI 快速部署
+pip install copilot-cli
+
+# 初始化应用
 copilot init \
     --app langchain-app \
     --name api-service \
-    --type 'Load Balanced Web Service' \
-    --dockerfile './Dockerfile' \
+    --type "Load Balanced Web Service" \
+    --dockerfile ./Dockerfile \
     --deploy
+
+# 配置环境变量（使用 AWS Secrets Manager）
+copilot secret init --name ANTHROPIC_API_KEY
 ```
 
-### GCP Cloud Run 部署
+**方案二：Lambda + API Gateway（Serverless）**
+
+```python
+# lambda_handler.py
+from mangum import Mangum
+from app.server import app
+
+# 使用 Mangum 将 FastAPI 转换为 Lambda handler
+handler = Mangum(app, lifespan="off")
+```
 
 ```bash
+# 使用 SAM 部署
+sam build && sam deploy --guided
+```
+
+> **注意**：Lambda 有 15 分钟超时限制和冷启动延迟，不适合长时间运行的 Agent 任务。
+
+### GCP Cloud Run
+
+```bash
+# 构建并推送镜像
+gcloud builds submit --tag gcr.io/PROJECT_ID/langchain-api
+
 # 部署到 Cloud Run
 gcloud run deploy langchain-api \
-    --source . \
-    --port 8001 \
+    --image gcr.io/PROJECT_ID/langchain-api \
+    --port 8000 \
     --allow-unauthenticated \
-    --region us-central1 \
-    --set-env-vars=ANTHROPIC_API_KEY=your_key
+    --region asia-east1 \
+    --memory 512Mi \
+    --cpu 1 \
+    --min-instances 0 \
+    --max-instances 10 \
+    --set-env-vars LANGSMITH_TRACING=true \
+    --set-secrets ANTHROPIC_API_KEY=anthropic-key:latest
 ```
 
-### Azure Container Apps 部署
+### Azure Container Apps
 
 ```bash
-# 部署到 Azure
+# 创建容器应用环境
+az containerapp env create \
+    --name langchain-env \
+    --resource-group my-rg \
+    --location eastasia
+
+# 部署应用
 az containerapp up \
     --name langchain-api \
     --source . \
     --resource-group my-rg \
-    --environment my-env \
+    --environment langchain-env \
     --ingress external \
-    --target-port 8001 \
-    --env-vars ANTHROPIC_API_KEY=your_key
+    --target-port 8000 \
+    --min-replicas 0 \
+    --max-replicas 10 \
+    --env-vars LANGSMITH_TRACING=true \
+    --secrets anthropic-key=YOUR_KEY \
+    --secret-env-vars ANTHROPIC_API_KEY=anthropic-key
 ```
 
 ## 生产环境清单
 
-### 安全性
+### 速率限制
 
-- [ ] 使用 HTTPS（配置 SSL 证书）
-- [ ] 实现 API Key 认证
-- [ ] 配置 CORS 白名单（不要在生产环境使用 `*`）
-- [ ] 敏感信息使用环境变量，不要硬编码
-- [ ] 定期轮换 API Key
+```python
+from fastapi import FastAPI, Request
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
 
-### 性能
+limiter = Limiter(key_func=get_remote_address)
+app = FastAPI()
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
-- [ ] 配置适当的超时时间
-- [ ] 实现请求速率限制
-- [ ] 使用连接池（数据库、HTTP 客户端）
-- [ ] 考虑缓存策略
+@app.post("/agent/invoke")
+@limiter.limit("10/minute")  # 每分钟最多 10 次请求
+async def invoke_agent(request: Request, body: dict):
+    result = executor.invoke(body)
+    return result
+```
 
-### 可观测性
-
-- [ ] 配置日志收集（结构化日志）
-- [ ] 集成 LangSmith 进行追踪
-- [ ] 设置健康检查端点
-- [ ] 配置告警和监控
-
-### 可靠性
-
-- [ ] 配置自动重启
-- [ ] 实现优雅关闭
-- [ ] 设置资源限制（CPU、内存）
-- [ ] 配置水平扩展策略
-
-## 最佳实践
-
-### 1. 结构化日志
+### 结构化日志
 
 ```python
 import logging
 import json
+import sys
 
 class JSONFormatter(logging.Formatter):
+    """结构化 JSON 日志格式"""
     def format(self, record):
         log_data = {
             "timestamp": self.formatTime(record),
             "level": record.levelname,
             "message": record.getMessage(),
             "module": record.module,
+            "function": record.funcName,
         }
-        return json.dumps(log_data)
+        if record.exc_info:
+            log_data["exception"] = self.formatException(record.exc_info)
+        return json.dumps(log_data, ensure_ascii=False)
 
-# 配置日志
-handler = logging.StreamHandler()
+# 配置根日志器
+handler = logging.StreamHandler(sys.stdout)
 handler.setFormatter(JSONFormatter())
-logging.getLogger().addHandler(handler)
+logging.basicConfig(level=logging.INFO, handlers=[handler])
+
+logger = logging.getLogger(__name__)
 ```
 
-### 2. 健康检查端点
-
-```python
-from fastapi import FastAPI
-
-app = FastAPI()
-
-@app.get("/health")
-def health_check():
-    return {"status": "healthy"}
-
-@app.get("/ready")
-def readiness_check():
-    # 检查依赖服务
-    try:
-        # 检查 LLM API 连接
-        # 检查数据库连接
-        return {"status": "ready"}
-    except Exception as e:
-        return {"status": "not ready", "error": str(e)}
-```
-
-### 3. 优雅关闭
+### 优雅关闭
 
 ```python
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
+import logging
+
+logger = logging.getLogger(__name__)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # 启动时执行
-    print("应用启动，初始化资源...")
+    # ---- 启动阶段 ----
+    logger.info("应用启动，初始化资源...")
+    # 预热模型连接、初始化连接池等
     yield
-    # 关闭时执行
-    print("应用关闭，清理资源...")
+    # ---- 关闭阶段 ----
+    logger.info("应用关闭，清理资源...")
+    # 关闭数据库连接、刷新日志缓冲区等
 
 app = FastAPI(lifespan=lifespan)
 ```
+
+### 扩展策略
+
+```bash
+# 使用 Gunicorn 多 Worker 模式
+gunicorn app.server:app \
+    -w 4 \
+    -k uvicorn.workers.UvicornWorker \
+    --bind 0.0.0.0:8000 \
+    --timeout 120 \
+    --graceful-timeout 30
+```
+
+### 完整检查清单
+
+**安全性**
+
+- [ ] 使用 HTTPS（配置 SSL/TLS 证书）
+- [ ] 实现 API Key / JWT 认证
+- [ ] 配置 CORS 白名单（禁止使用 `*`）
+- [ ] 密钥通过环境变量或 Secrets Manager 注入，不硬编码
+- [ ] 定期轮换 API Key
+- [ ] 输入验证和清洗（防止 prompt injection）
+
+**性能**
+
+- [ ] 配置适当的请求超时（Agent 通常需要 30-120 秒）
+- [ ] 实现速率限制
+- [ ] 使用连接池（数据库、HTTP 客户端）
+- [ ] 考虑响应缓存（幂等请求）
+- [ ] 启用 SSE 流式响应减少首字延迟
+
+**可观测性**
+
+- [ ] 结构化日志（JSON 格式）
+- [ ] 集成 LangSmith 追踪
+- [ ] 健康检查端点（`/health` + `/ready`）
+- [ ] 配置告警（错误率、延迟、Token 用量）
+
+**可靠性**
+
+- [ ] 实现优雅关闭（`lifespan`）
+- [ ] 配置自动重启策略
+- [ ] 设置资源限制（CPU、内存）
+- [ ] 配置水平自动扩缩
+- [ ] 异常重试与断路器
 
 ## 常见问题
 
 **Q: LangServe 和直接使用 FastAPI 有什么区别？**
 
-A: LangServe 在 FastAPI 基础上提供了：
+LangServe 在 FastAPI 基础上自动为 LangChain Runnable 生成 REST API、内置 Playground、自动处理流式响应。如果你的应用只是简单的 API 封装，直接用 FastAPI 即可；如果要部署完整的 LangChain Chain/Agent，LangServe 更方便。
 
-- 自动为 LangChain Runnable 生成 REST API
-- 内置 Playground 测试界面
-- 自动处理流式响应
-- 客户端 SDK 支持
+**Q: 如何处理长时间运行的 Agent 请求？**
 
-如果你只是部署简单的 API，直接用 FastAPI 即可。如果要部署完整的 LangChain 应用，LangServe 更方便。
+1. 优先使用流式响应（stream）而非同步调用，让用户尽快看到输出
+2. 配置足够的超时时间（Agent 可能需要多轮工具调用）
+3. 对于超过 5 分钟的任务，考虑异步处理 + WebSocket 通知
 
-**Q: 如何处理长时间运行的请求？**
+**Q: 如何选择云平台？**
 
-A: 建议：
-
-1. 使用流式响应（stream）而非同步调用
-2. 配置适当的超时时间
-3. 对于非常长的任务，考虑异步处理 + 回调
-
-**Q: 如何扩展服务处理更多请求？**
-
-A:
-
-1. 水平扩展：部署多个实例，使用负载均衡
-2. 使用 Gunicorn + Uvicorn workers
-3. 配置云服务的自动扩展策略
-
-```bash
-# 多 worker 启动
-gunicorn app.server:app -w 4 -k uvicorn.workers.UvicornWorker
-```
-
-**Q: 如何保护 API 端点？**
-
-A: 推荐的认证方式：
-
-1. API Key 认证（简单场景）
-2. JWT Token（用户认证）
-3. OAuth 2.0（企业集成）
+- **已有 AWS 基础设施** → ECS Fargate 或 Lambda
+- **想要最简单的部署** → GCP Cloud Run（从源码直接部署）
+- **企业级合规要求** → Azure Container Apps
+- **纯 LangChain 生态** → LangSmith 托管
 
 ## 下一步
 
-恭喜你完成了 LangChain 1.0 教程的学习！接下来可以：
-
-- 回顾 [Streaming 流式响应](/ai/langchain/guide/streaming) - 优化用户体验
-- 回顾 [LangGraph 工作流](/ai/langchain/guide/langgraph-intro) - 构建复杂应用
-- 查看 [Legacy 迁移指南](/ai/langchain/guide/legacy-migration) - 从旧版本迁移
+- 学习 [流式响应](/ai/langchain/guide/streaming) 优化用户体验
+- 了解 [可观测性](/ai/langchain/guide/observability) 在生产环境中监控 Agent
+- 掌握 [测试](/ai/langchain/guide/testing) 确保部署前的质量关
 
 ## 参考资源
 
-- [LangServe 官方文档](https://github.com/langchain-ai/langserve)
+- [LangServe 官方仓库](https://github.com/langchain-ai/langserve)
 - [FastAPI 官方文档](https://fastapi.tiangolo.com/)
 - [Docker 官方文档](https://docs.docker.com/)
-- [LangSmith 追踪平台](https://smith.langchain.com/)
+- [LangSmith 部署文档](https://docs.smith.langchain.com/)

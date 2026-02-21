@@ -7,6 +7,10 @@ description: 学习如何使用 LangGraph 构建复杂的 Agent 工作流
 
 ## 概述
 
+> 这是一页 LangChain -> LangGraph 的桥接页：帮助你判断“什么时候从 `create_agent` 升级到图编排”。
+>
+> 如果你准备系统学习 LangGraph，请直接进入 [LangGraph 专题](/ai/langgraph/)。
+
 LangGraph 是 LangChain 官方推荐的工作流编排框架，专门用于构建复杂的、有状态的 Agent 应用。当 `create_agent` 无法满足你的需求时——比如需要条件分支、并行执行、循环迭代或人工审批——LangGraph 就是你的选择。
 
 ### LangGraph 是什么？
@@ -506,15 +510,33 @@ A:
 3. 使用 LangSmith 进行追踪
 4. 使用 `workflow.get_graph().draw_mermaid()` 可视化
 
+### 何时从 LangChain Agent 升级到 LangGraph
+
+以下场景建议直接使用 LangGraph：
+
+| 场景 | 说明 |
+|------|------|
+| **条件分支** | Agent 需要根据中间结果走不同路径 |
+| **并行执行** | 多个工具需要同时执行以减少延迟 |
+| **持久化恢复** | 流程中断后需要从上次位置继续 |
+| **复杂状态管理** | 需要在多个步骤间共享和更新复杂状态 |
+| **精确流程控制** | 需要明确定义每一步的执行顺序 |
+
+如果你的场景是"接收输入 → 调用工具 → 返回结果"的线性流程，继续使用 `create_agent` 即可。
+
 ## 下一步
 
 现在你已经掌握了 LangGraph 的基础，接下来可以：
 
-- 学习 [生产部署](/ai/langchain/guide/deployment) - 将 LangGraph 应用部署到生产环境
-- 回顾 [Streaming 流式响应](/ai/langchain/guide/streaming) - LangGraph 也支持流式输出
+- 从头学习 [LangGraph 快速开始](/ai/langgraph/guide/quickstart) - 用最小示例建立完整心智模型
+- 进阶 [LangGraph 进阶编排模式](/ai/langgraph/guide/workflows-agents) - 条件分支、并行、中断恢复
+- 学习 [部署](/ai/langchain/guide/deployment) - 将 Agent 应用部署到生产环境
+- 回顾 [流式响应 Streaming](/ai/langchain/guide/streaming) - LangGraph 也支持流式输出
+- 了解 [多智能体模式](/ai/langchain/guide/multi-agent-overview) - LangChain 内置的多智能体协作
 
 ## 参考资源
 
 - [LangGraph 官方文档](https://docs.langchain.com/oss/python/langgraph/)
-- [LangGraph 工作流模式](https://docs.langchain.com/oss/python/langgraph/workflows-agents)
-- [LangGraph API 参考](https://docs.langchain.com/oss/python/langgraph/use-graph-api)
+- [LangGraph Overview](https://docs.langchain.com/oss/python/langgraph/overview)
+- [Graph API](https://docs.langchain.com/oss/python/langgraph/use-graph-api)
+- [Durable Execution](https://docs.langchain.com/oss/python/langgraph/durable-execution)

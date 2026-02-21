@@ -5,6 +5,8 @@ description: Python SQLAlchemy 数据库 ORM 框架
 
 # sqlalchemy ORM 框架
 
+[🔗 SQLAlchemy 官方文档](https://docs.sqlalchemy.org/en/20/){target="_blank" rel="noopener"}
+
 ## 本章目标
 
 - 掌握 SQLAlchemy 2.0 用法

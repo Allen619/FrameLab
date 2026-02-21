@@ -7,6 +7,8 @@ description: Python 上下文管理器完整指南,with 语句与资源管理
 
 上下文管理器是 Python 用于资源管理的强大机制,通过 `with` 语句确保资源的正确获取和释放,即使发生异常也能保证清理代码执行。
 
+[🔗 contextlib 官方文档](https://docs.python.org/3/library/contextlib.html){target="_blank" rel="noopener"}
+
 ## 什么是上下文管理器?
 
 ### 核心概念

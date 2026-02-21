@@ -7,6 +7,8 @@ description: 学习 ClusterIP Service 的工作原理，实现集群内部服务
 
 **ClusterIP** 是 Service 的默认类型，用于集群内部的服务发现和负载均衡。
 
+[🔗 Kubernetes 官方文档 - Service](https://kubernetes.io/docs/concepts/services-networking/service/){target="_blank" rel="noopener"}
+
 ## 前置知识
 
 > 💡 阅读本章前，请确保已完成：

@@ -16,6 +16,8 @@ description: 深入理解 Kubernetes 中最小的部署单元 Pod，掌握 Pod �
 
 **Pod** 是 Kubernetes 中最小的可部署和管理单元。
 
+[🔗 Kubernetes 官方文档 - Pod](https://kubernetes.io/docs/concepts/workloads/pods/){target="_blank" rel="noopener"}
+
 > 💡 **类比**：Pod 就像一个"合租公寓"，里面可以住一个或多个"室友"（容器）。这些室友：
 > - 共享同一个地址（IP 地址）
 > - 共享同一个冰箱（存储卷）

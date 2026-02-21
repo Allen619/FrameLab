@@ -7,6 +7,8 @@ description: Python 生成器完整指南,与 JavaScript Generator 深度对比
 
 生成器是 Python 的惰性求值特性,使用 `yield` 关键字实现迭代器协议,能够按需生成值而不是一次性生成所有值,节省内存且提高性能。
 
+[🔗 Python 生成器官方文档](https://docs.python.org/3/reference/expressions.html#yield-expressions){target="_blank" rel="noopener"}
+
 ## 什么是生成器?
 
 ### 核心概念

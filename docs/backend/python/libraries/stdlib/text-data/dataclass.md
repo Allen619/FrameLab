@@ -16,6 +16,8 @@ description: Python dataclass 装饰器详解,与 TypeScript interface/class 对
 - 与 TypeScript interface/type 的对比
 - 数据验证与类型检查
 
+[🔗 dataclasses 官方文档](https://docs.python.org/3/library/dataclasses.html){target="_blank" rel="noopener"}
+
 ## 为什么使用 dataclass?
 
 ```python

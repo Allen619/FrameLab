@@ -19,6 +19,7 @@ export default withMermaid(
           text: 'AI',
           items: [
             { text: 'LangChain', link: '/ai/langchain/' },
+            { text: 'LangGraph', link: '/ai/langgraph/' },
             { text: 'LlamaIndex', link: '/ai/llamaindex/' },
             { text: 'Instructor', link: '/ai/instructor/' },
           ],
@@ -160,6 +161,10 @@ export default withMermaid(
                       {
                         text: 'pickle 序列化',
                         link: '/backend/python/libraries/stdlib/text-data/pickle',
+                      },
+                      {
+                        text: '🔥 dataclass 数据类',
+                        link: '/backend/python/libraries/stdlib/text-data/dataclass',
                       },
                     ],
                   },
@@ -431,6 +436,34 @@ export default withMermaid(
                         text: '⭐ APScheduler',
                         link: '/backend/python/libraries/third-party/scheduling/apscheduler',
                       },
+                      {
+                        text: '概述',
+                        link: '/backend/python/libraries/third-party/scheduling/apscheduler-overview',
+                      },
+                      {
+                        text: '快速开始',
+                        link: '/backend/python/libraries/third-party/scheduling/apscheduler-quickstart',
+                      },
+                      {
+                        text: '核心概念',
+                        link: '/backend/python/libraries/third-party/scheduling/apscheduler-core-concepts',
+                      },
+                      {
+                        text: '触发器',
+                        link: '/backend/python/libraries/third-party/scheduling/apscheduler-triggers',
+                      },
+                      {
+                        text: '作业存储',
+                        link: '/backend/python/libraries/third-party/scheduling/apscheduler-job-stores',
+                      },
+                      {
+                        text: '执行器',
+                        link: '/backend/python/libraries/third-party/scheduling/apscheduler-executors',
+                      },
+                      {
+                        text: '排错与最佳实践',
+                        link: '/backend/python/libraries/third-party/scheduling/apscheduler-troubleshooting-best-practices',
+                      },
                     ],
                   },
                 ],
@@ -459,25 +492,144 @@ export default withMermaid(
 
         '/ai/langchain/': [
           {
-            text: '基础',
+            text: '入门',
             items: [
-              { text: '环境搭建', link: '/ai/langchain/guide/getting-started' },
-              { text: 'Agent 架构', link: '/ai/langchain/guide/agent-architecture' },
-              { text: 'Middleware', link: '/ai/langchain/guide/middleware' },
-              { text: 'Content Blocks', link: '/ai/langchain/guide/content-blocks' },
+              { text: '⭐ 概览', link: '/ai/langchain/guide/overview' },
+              { text: '安装与配置', link: '/ai/langchain/guide/install' },
+              { text: '⭐ 快速上手', link: '/ai/langchain/guide/quickstart' },
+              { text: '设计理念', link: '/ai/langchain/guide/philosophy' },
             ],
           },
           {
-            text: '进阶',
+            text: '核心组件',
             items: [
-              { text: 'Streaming 流式响应', link: '/ai/langchain/guide/streaming' },
+              { text: '🔥 智能体 Agent', link: '/ai/langchain/guide/agents' },
+              { text: '⭐ 模型 Models', link: '/ai/langchain/guide/models' },
+              { text: '消息 Messages', link: '/ai/langchain/guide/messages' },
+              { text: '🔥 工具 Tools', link: '/ai/langchain/guide/tools' },
+              { text: '短期记忆', link: '/ai/langchain/guide/short-term-memory' },
+              { text: '🔥 流式响应 Streaming', link: '/ai/langchain/guide/streaming' },
+              { text: '⭐ 结构化输出', link: '/ai/langchain/guide/structured-output' },
+            ],
+          },
+          {
+            text: '中间件',
+            items: [
+              { text: '中间件概览', link: '/ai/langchain/guide/middleware-overview' },
+              { text: '🔥 内置中间件', link: '/ai/langchain/guide/prebuilt-middleware' },
+              { text: '自定义中间件', link: '/ai/langchain/guide/custom-middleware' },
+            ],
+          },
+          {
+            text: '高级用法',
+            collapsed: true,
+            items: [
+              { text: '安全护栏 Guardrails', link: '/ai/langchain/guide/guardrails' },
+              { text: '⭐ 上下文工程', link: '/ai/langchain/guide/context-engineering' },
+              { text: '🔥 MCP 协议', link: '/ai/langchain/guide/mcp' },
+              { text: '人机协作 HITL', link: '/ai/langchain/guide/hitl' },
+              { text: '🔥 检索增强 RAG', link: '/ai/langchain/guide/retrieval' },
+              { text: '长期记忆', link: '/ai/langchain/guide/long-term-memory' },
+              { text: '运行时配置', link: '/ai/langchain/guide/runtime' },
+            ],
+          },
+          {
+            text: '多智能体',
+            collapsed: true,
+            items: [
+              { text: '⭐ 多智能体概览', link: '/ai/langchain/guide/multi-agent-overview' },
+              { text: '🔥 多智能体模式', link: '/ai/langchain/guide/multi-agent-patterns' },
+              { text: '高级多智能体', link: '/ai/langchain/guide/multi-agent-advanced' },
+            ],
+          },
+          {
+            text: '开发与部署',
+            collapsed: true,
+            items: [
+              { text: 'LangSmith Studio', link: '/ai/langchain/guide/studio' },
+              { text: '测试', link: '/ai/langchain/guide/testing' },
+              { text: '🔥 部署', link: '/ai/langchain/guide/deployment' },
+              { text: '可观测性', link: '/ai/langchain/guide/observability' },
+            ],
+          },
+          {
+            text: '实战教程',
+            collapsed: true,
+            items: [
+              { text: '语义搜索', link: '/ai/langchain/guide/tutorial-semantic-search' },
+              { text: '🔥 RAG Agent 实战', link: '/ai/langchain/guide/tutorial-rag-agent' },
+              { text: 'SQL Agent 实战', link: '/ai/langchain/guide/tutorial-sql-agent' },
+            ],
+          },
+          {
+            text: '迁移与联动',
+            collapsed: true,
+            items: [
+              { text: 'Legacy 迁移指南', link: '/ai/langchain/guide/legacy-migration' },
               { text: 'LangGraph 工作流', link: '/ai/langchain/guide/langgraph-intro' },
-              { text: '生产部署', link: '/ai/langchain/guide/deployment' },
+            ],
+          },
+        ],
+
+        '/ai/langgraph/': [
+          {
+            text: '入门篇',
+            collapsed: false,
+            items: [
+              { text: '⭐ 概览', link: '/ai/langgraph/guide/overview' },
+              { text: '安装与环境', link: '/ai/langgraph/guide/install' },
+              { text: '⭐ 快速上手', link: '/ai/langgraph/guide/quickstart' },
+              { text: 'LangGraph 思维方式', link: '/ai/langgraph/guide/thinking-in-langgraph' },
+              { text: '工作流与 Agent 模式', link: '/ai/langgraph/guide/workflows-agents' },
             ],
           },
           {
-            text: '迁移',
-            items: [{ text: 'Legacy 迁移指南', link: '/ai/langchain/guide/legacy-migration' }],
+            text: '核心能力篇',
+            collapsed: false,
+            items: [
+              { text: '⭐ 持久化', link: '/ai/langgraph/guide/persistence' },
+              { text: 'Durable Execution', link: '/ai/langgraph/guide/durable-execution' },
+              { text: '⭐ Streaming 流式处理', link: '/ai/langgraph/guide/streaming' },
+              { text: '⭐ Interrupts (HITL)', link: '/ai/langgraph/guide/interrupts' },
+              { text: 'Time Travel', link: '/ai/langgraph/guide/time-travel' },
+              { text: 'Memory 记忆系统', link: '/ai/langgraph/guide/memory' },
+              { text: 'Subgraphs 子图', link: '/ai/langgraph/guide/subgraphs' },
+            ],
+          },
+          {
+            text: 'API 篇',
+            collapsed: false,
+            items: [
+              { text: '⭐ API 选型指南', link: '/ai/langgraph/guide/choosing-apis' },
+              { text: 'Graph API 概念', link: '/ai/langgraph/guide/graph-api' },
+              { text: '⭐ Graph API 实战', link: '/ai/langgraph/guide/use-graph-api' },
+              { text: 'Functional API 概念', link: '/ai/langgraph/guide/functional-api' },
+              { text: 'Functional API 实战', link: '/ai/langgraph/guide/use-functional-api' },
+              { text: 'Runtime (Pregel)', link: '/ai/langgraph/guide/runtime' },
+            ],
+          },
+          {
+            text: '工程化篇',
+            collapsed: true,
+            items: [
+              { text: '应用结构', link: '/ai/langgraph/guide/application-structure' },
+              { text: '测试', link: '/ai/langgraph/guide/testing' },
+              { text: '⭐ LangSmith Studio', link: '/ai/langgraph/guide/studio' },
+              { text: 'Agent Chat UI', link: '/ai/langgraph/guide/chat-ui' },
+              { text: '部署', link: '/ai/langgraph/guide/deployment' },
+              { text: '可观测性', link: '/ai/langgraph/guide/observability' },
+            ],
+          },
+          {
+            text: '参考',
+            collapsed: true,
+            items: [
+              { text: '常见坑与排查', link: '/ai/langgraph/guide/pitfalls' },
+            ],
+          },
+          {
+            text: '联动',
+            items: [{ text: 'LangChain 桥接页', link: '/ai/langchain/guide/langgraph-intro' }],
           },
         ],
 
@@ -525,6 +677,7 @@ export default withMermaid(
           {
             text: '进阶指南',
             items: [
+              { text: '⭐ 进阶用法', link: '/ai/instructor/advanced' },
               { text: '⭐ 流式传输 (Streaming)', link: '/ai/instructor/guides/streaming' },
               { text: '处理列表 (Iterables)', link: '/ai/instructor/guides/iterable' },
               { text: 'Hooks 与调试', link: '/ai/instructor/guides/hooks' },

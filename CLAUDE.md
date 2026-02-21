@@ -1,95 +1,78 @@
-﻿<!-- OPENSPEC:START -->
-# OpenSpec Instructions
+# CLAUDE.md
 
-These instructions are for AI assistants working in this project.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-Always open `@/openspec/AGENTS.md` when the request:
-- Mentions planning or proposals (words like proposal, spec, change, plan)
-- Introduces new capabilities, breaking changes, architecture shifts, or big performance/security work
-- Sounds ambiguous and you need the authoritative spec before coding
+## 项目概述
 
-Use `@/openspec/AGENTS.md` to learn:
-- How to create and apply change proposals
-- Spec format and conventions
-- Project structure and guidelines
+中文技术学习文档站，使用 VitePress 构建，面向前端开发者。内容涵盖四大板块：前端、后端（Python）、AI（LangChain / LangGraph / LlamaIndex / Instructor）、运维（Kubernetes）。
 
-Keep this managed block so 'openspec update' can refresh the instructions.
+## 常用命令
 
-<!-- OPENSPEC:END -->
-
-﻿# docs-site Development Guidelines
-
-Auto-generated from all feature plans. Last updated: 2025-11-26
-
-## Active Technologies
-- TypeScript (VitePress 配置), Markdown (文档内容) + VitePress ^1.6.4, vitepress-plugin-mermaid ^2.0.17, Mermaid.js ^11.12.1 (001-ops-k8s-tutorial)
-- 静态文件系统（Markdown 文件） (001-ops-k8s-tutorial)
-- TypeScript (VitePress 配置), Markdown (文档内容), Python 3.8+ (代码示例) + VitePress ^1.6.4, vitepress-plugin-mermaid ^2.0.17, LlamaIndex 0.10.x+ (002-llamaindex-tutorial)
-
-- TypeScript (VitePress 配置), Markdown (文档内容) + VitePress ^1.6.4, vitepress-plugin-mermaid ^2.0.17, mermaid ^11.12.1 (001-docs-site-setup)
-- 静态文件系统 (001-docs-site-setup)
-
-- [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION] + [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION] (001-docs-site-setup)
-
-## Project Structure
-
-```text
-backend/
-frontend/
-tests/
+```bash
+npm run dev          # 启动开发服务器（热重载）
+npm run build        # 生产构建（含断链检查）
+npm run preview      # 预览构建产物
+npm run lint         # ESLint 检查
+npm run lint:fix     # ESLint 自动修复
+npm run format       # Prettier 格式化
+npm run format:check # Prettier 格式检查
 ```
 
-## Commands
+## 架构
 
-cd src; pytest; ruff check .
+### 核心配置
 
-## Code Style
+- **`docs/.vitepress/config.mts`** — 站点配置中枢：顶部导航（nav）、所有板块的侧边栏（sidebar）、Mermaid 插件集成。**新增/修改页面必须同步更新此文件的 sidebar 配置。**
+- 配置通过 `withMermaid(defineConfig({...}))` 包装，启用 Mermaid 图表支持。
 
-[e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]: Follow standard conventions
+### 自定义主题
 
-## Recent Changes
-- 002-llamaindex-tutorial: Added TypeScript (VitePress 配置), Markdown (文档内容), Python 3.8+ (代码示例) + VitePress ^1.6.4, vitepress-plugin-mermaid ^2.0.17, LlamaIndex 0.10.x+
-- 001-ops-k8s-tutorial: Added TypeScript (VitePress 配置), Markdown (文档内容) + VitePress ^1.6.4, vitepress-plugin-mermaid ^2.0.17, Mermaid.js ^11.12.1
+`docs/.vitepress/theme/` 扩展了默认主题：
+- `MermaidZoom.vue` — Mermaid 图表点击放大交互组件
+- `custom.css` / `mobile.css` / `mermaid-zoom.css` — 全局样式、移动端适配、图表缩放样式
 
-- 001-docs-site-setup: Added TypeScript (VitePress 配置), Markdown (文档内容) + VitePress ^1.6.4, vitepress-plugin-mermaid ^2.0.17, mermaid ^11.12.1
+### 文档内容结构
 
+```
+docs/
+├── ai/
+│   ├── langchain/guide/    # LangChain 教程
+│   ├── langgraph/guide/    # LangGraph 全面教程（24 页，按入门/核心能力/API/工程化分组）
+│   ├── llamaindex/guide/   # LlamaIndex 教程
+│   └── instructor/         # Instructor 教程（含 cookbook/guides/integrations）
+├── backend/python/         # Python 教程（basics/data-structures/advanced/libraries/tooling/deployment）
+├── frontend/               # 前端（待建设）
+├── ops/kubernetes/         # Kubernetes 教程
+└── index.md                # 站点首页
+```
 
-<!-- MANUAL ADDITIONS START -->
-<!-- MANUAL ADDITIONS END -->
+每个板块有独立的 `index.md` 首页（VitePress home layout）和 `guide/` 子目录存放教程页面。
 
-## 个人档案 (Profile)
-- **角色:** 资深技术教育家（专精于 Python 底层原理与 JS/TS 语言特性的对比分析）。
-- **用户画像:** 正在阅读现有 Python 教程项目的资深前端开发工程师。
-- **目标:** 帮助用户深度理解教程代码，厘清语法差异，并解释底层运行机制。
-- **语言:** 中文 (Chinese)
+### OpenSpec 变更管理
 
-## 核心工作流 (Core Workflow)
-**重要指令**：在开始任何解析之前，你必须优先阅读并深度理解这个项目的**全部上下文信息**。基于对项目背景的理解，请扮演一位“坐在我身边的资深导师”，按以下步骤对代码进行解析：
+`openspec/` 目录管理文档变更提案。结构：`openspec/changes/<change-name>/` 下包含 `proposal.md`、`design.md`、`tasks.md`、`specs/` 等。涉及新增能力或大规模变更时应参考 `openspec/AGENTS.md`。
 
-### 1. 🧐 代码逐行/模块解析 (Code Breakdown)
-- 用简洁明了的语言解释这段代码**实际上在做什么**。
-- **语法高亮**：如果代码中出现了 Python 特有的“语法糖”（例如：列表推导式 List Comprehension、装饰器 Decorators、上下文管理器 Context Managers），请单独拆解并说明其展开后的逻辑。
+## 文档编写规范
 
-### 2. 🔄 前端思维映射 (The JS/TS Analogy)
-- **这是关键环节：** 告诉我这段逻辑如果在 JavaScript/TypeScript 中通常会怎么写？或者对应的概念是什么？
-- **差异对比**：
-    - 如果两者看起来很像但行为不同（例如：Python 的作用域 `Scope` vs JS 的闭包 `Closure`），请大声发出 **⚠️ 警示**，防止我混淆。
-    - 如果 Python 的某个概念在 JS 中完全没有对应（例如：元类 `Metaclasses` 或 魔术方法 `dunder methods`），请尝试用“设计模式”的角度来类比解释，帮助我建立认知。
+- **语言**：全站中文，UTF-8 编码
+- **目标读者**：前端开发者（资深 JS/TS 背景）
+- **风格**：每个技术概念提供前端类比（如 State vs Redux Store），类比后补充"原生语义"说明段落，防止误导
+- **代码示例**：Python 代码为主，使用各框架最新 API
+- **Mermaid 图表**：用于复杂流程可视化（flowchart / sequenceDiagram / mindmap），VitePress 构建时自动渲染
+- **页面结构**：YAML frontmatter（title + description）、先修关系链接、底部"下一步"导航
 
-### 3. 🧠 深度原理 (The "Why" & Mechanics)
-- **解释原因**：教程作者为什么要这样写？（是为了性能优化？代码可读性？还是 Python 社区的惯例？）
-- **底层机制**：深入解释 Python 解释器层面发生了什么。
-    - *示例*：涉及变量赋值时，解释 Python 的“对象引用传递”模型；涉及并发时，解释 GIL（全局解释器锁）或 Asyncio 事件循环与 JS 事件循环的区别。
+### 新增内容时的导航检查清单
 
-### 4. 📚 知识扩展 (Extended Knowledge)
-- **工程视角**：在实际的大型 Python 项目中，这段代码符合“生产级”标准吗？如果不是，实际生产环境中通常会如何优化或重构？
-- **相关概念**：基于当前内容，推荐 1-2 个值得我进一步深入搜索的高级技术关键词。
+**新增任何内容板块或子模块时，必须同步检查并更新以下位置：**
 
-## 回复规则 (Response Rules)
-- **格式清晰**：强制使用 Markdown 的 H3/H4 标题、**加粗**强调和代码块来组织输出，严禁输出大段密集的纯文本。
-- **语气风格**：专业、具有启发性、注重底层原理，就像在进行一场深度的技术 Code Review。
-- **禁止项**：**不要**主动修改教程原本的代码，除非我明确问你“这段代码怎么优化”。你的主要任务是**解释和剖析**现状。
+1. **`docs/.vitepress/config.mts`** — sidebar 配置（新增页面路由）和 nav 顶部导航（新增板块）
+2. **`docs/index.md`**（站点首页）— hero actions 按钮和 features 卡片是否需要新增或更新描述
+3. **板块首页**（如 `docs/ai/index.md`）— hero actions 按钮和 features 卡片是否覆盖了所有子模块
+4. **相关页面的交叉引用** — 其他页面中引用到的链接是否需要更新
 
-## 初始化 (Initialization)
-请回复：
-"**伴读导师已准备就绪。我已读取项目上下文。请发送您正在阅读的教程片段（代码或文本），我将用前端视角为您深度解析。**"
+遗漏任何一处都会导致用户无法通过导航发现新内容。
+
+## 代码风格
+
+- TypeScript/JS：无分号、单引号、2 空格缩进、尾逗号 es5、行宽 100（见 `.prettierrc`）
+- ESLint：flat config 格式，禁止 `no-explicit-any`（warn）、禁止未使用变量（`_` 前缀豁免）

@@ -16,6 +16,8 @@ description: 理解 Kubernetes 的整体架构，控制平面和工作节点的�
 
 一个 Kubernetes 集群由两部分组成：
 
+[🔗 Kubernetes 官方文档 - 集群架构组件](https://kubernetes.io/docs/concepts/overview/components/){target="_blank" rel="noopener"}
+
 1. **控制平面（Control Plane）**：集群的"大脑"，负责决策和管理
 2. **工作节点（Worker Node）**：集群的"手脚"，负责实际运行容器
 

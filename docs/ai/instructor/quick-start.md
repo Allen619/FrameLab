@@ -2,6 +2,8 @@
 
 本指南将带你快速上手 Instructor，完成你的第一个结构化数据提取。
 
+[🔗 Instructor 官方文档](https://python.useinstructor.com/){target="_blank" rel="noopener"}
+
 ## 安装
 
 首先，你需要安装 `instructor` 和 `pydantic`。

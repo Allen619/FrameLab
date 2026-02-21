@@ -76,6 +76,8 @@ graph TD
 
 ## LlamaIndex 核心组件
 
+[🔗 LlamaIndex RAG 概念与流程](https://docs.llamaindex.ai/en/stable/understanding/){target="_blank" rel="noopener"}
+
 ### 组件概览
 
 LlamaIndex 将 RAG 流程封装成几个核心组件：
@@ -108,6 +110,8 @@ graph TD
 ### 示例 1: 最小 RAG 应用
 
 > 适用版本: LlamaIndex 0.10.x+
+
+[🔗 VectorStoreIndex API 参考](https://docs.llamaindex.ai/en/stable/module_guides/indexing/vector_store_index/){target="_blank" rel="noopener"}
 
 ```python
 # 导入必要的模块

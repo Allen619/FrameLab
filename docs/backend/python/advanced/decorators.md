@@ -94,6 +94,8 @@ add(1, 2)
 
 ### 保留函数元数据
 
+[🔗 functools.wraps 官方文档](https://docs.python.org/3/library/functools.html#functools.wraps){target="_blank" rel="noopener"}
+
 ```python
 from functools import wraps
 

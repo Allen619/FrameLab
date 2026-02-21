@@ -7,6 +7,8 @@ description: Python Type Hints 完整指南,与 TypeScript 深度对比
 
 Python 3.5+ 支持类型提示 (Type Hints),提供静态类型检查,类似 TypeScript。虽然是可选的,但可以显著提高代码可维护性和 IDE 支持。
 
+[🔗 typing 官方文档](https://docs.python.org/3/library/typing.html){target="_blank" rel="noopener"}
+
 ## 为什么使用类型提示?
 
 ### Python vs TypeScript 哲学

@@ -18,6 +18,8 @@ description: 掌握 LlamaIndex 的数据加载器，从多种数据源加载文�
 
 ### 什么是 Data Connector？
 
+[🔗 Data Connectors 官方文档](https://docs.llamaindex.ai/en/stable/module_guides/loading/connector/){target="_blank" rel="noopener"}
+
 **Data Connector** 就像**快递员**。无论你的"包裹"（数据）来自哪里——本地文件、网页、数据库、云存储——快递员都能把它送到你手中（转换成 LlamaIndex 的 Document 对象）。
 
 ```mermaid
@@ -47,6 +49,8 @@ graph TD
 ### 示例 1: SimpleDirectoryReader 基础用法
 
 > 适用版本: LlamaIndex 0.10.x+
+
+[🔗 SimpleDirectoryReader API 参考](https://docs.llamaindex.ai/en/stable/module_guides/loading/simpledirectoryreader/){target="_blank" rel="noopener"}
 
 ```python
 from llama_index.core import SimpleDirectoryReader

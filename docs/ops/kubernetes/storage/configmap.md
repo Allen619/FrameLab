@@ -7,6 +7,8 @@ description: 学习使用 ConfigMap 管理应用配置，实现配置与代码�
 
 **ConfigMap**（配置映射）用于存储非敏感的配置数据，实现配置与应用代码的分离。
 
+[🔗 Kubernetes 官方文档 - ConfigMap](https://kubernetes.io/docs/concepts/configuration/configmap/){target="_blank" rel="noopener"}
+
 ## 前置知识
 
 > 💡 阅读本章前，请确保已完成：

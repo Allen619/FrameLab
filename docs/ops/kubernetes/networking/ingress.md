@@ -16,6 +16,8 @@ description: 学习 Ingress 的基本概念和配置，实现 HTTP/HTTPS 路由�
 
 **Ingress**（入口，K8s 的 HTTP 路由规则）不是一种 Service 类型，而是独立的资源，它定义了从集群外部到内部 Service 的 HTTP/HTTPS 路由规则。
 
+[🔗 Kubernetes 官方文档 - Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/){target="_blank" rel="noopener"}
+
 ```mermaid
 flowchart TD
     U[用户] -->|example.com| I[Ingress Controller]

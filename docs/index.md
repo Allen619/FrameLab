@@ -15,6 +15,9 @@ hero:
     - theme: alt
       text: AI
       link: /ai/
+    - theme: alt
+      text: 运维
+      link: /ops/kubernetes/
 
 features:
   - title: 前端开发
@@ -24,6 +27,9 @@ features:
     details: Python 开发教程，专为前端开发者设计
     link: /backend/python/
   - title: AI 技术
-    details: LangChain 1.0 中文教程
-    link: /ai/langchain/
+    details: LangChain、LangGraph、LlamaIndex、Instructor 中文教程
+    link: /ai/
+  - title: 运维
+    details: Kubernetes 容器编排教程，从概念到生产实践
+    link: /ops/kubernetes/
 ---

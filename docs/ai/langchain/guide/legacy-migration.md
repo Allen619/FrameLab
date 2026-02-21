@@ -431,9 +431,9 @@ find . -name "*.py" -exec sed -i 's/from langchain.chains/from langchain_classic
 
 现在你已经了解了如何从 LangChain 0.x 迁移到 1.0,接下来可以:
 
-- 返回 [环境搭建](/ai/langchain/guide/getting-started) - 设置 LangChain 1.0 开发环境
-- 学习 [Agent 架构](/ai/langchain/guide/agent-architecture) - 掌握 `create_agent` 的使用
-- 探索 [Middleware](/ai/langchain/guide/middleware) - 了解 1.0 的新特性
+- 返回 [概览](/ai/langchain/guide/overview) - 了解 LangChain 生态全景
+- 学习 [智能体 Agent](/ai/langchain/guide/agents) - 掌握 `create_agent` 的使用
+- 探索 [中间件概览](/ai/langchain/guide/middleware-overview) - 了解 1.0 的新特性
 
 ## 参考资源
 

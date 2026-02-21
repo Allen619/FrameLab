@@ -17,6 +17,11 @@ const position = ref({ x: 0, y: 0 })
 const isDragging = ref(false)
 const dragStart = ref({ x: 0, y: 0 })
 
+// 根据屏幕宽度获取默认缩放比例
+function getDefaultScale() {
+  return window.innerWidth <= 768 ? 2 : 3
+}
+
 // 打开放大弹窗
 function openZoom(svg: SVGElement) {
   // 克隆 SVG 并移除固定尺寸限制
@@ -26,7 +31,7 @@ function openZoom(svg: SVGElement) {
   cloned.setAttribute('height', '100%')
 
   svgContent.value = cloned.outerHTML
-  scale.value = 1
+  scale.value = getDefaultScale()
   position.value = { x: 0, y: 0 }
   isOpen.value = true
 
@@ -42,7 +47,7 @@ function closeZoom() {
 
 // 缩放控制
 function zoomIn() {
-  scale.value = Math.min(scale.value + 0.25, 3)
+  scale.value = Math.min(scale.value + 0.25, 5)
 }
 
 function zoomOut() {
@@ -50,7 +55,7 @@ function zoomOut() {
 }
 
 function resetZoom() {
-  scale.value = 1
+  scale.value = getDefaultScale()
   position.value = { x: 0, y: 0 }
 }
 

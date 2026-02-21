@@ -15,6 +15,8 @@ description: Python pathlib 模块详解,与 Node.js path/fs 模块对比
 - 与 Node.js path/fs 模块的对比
 - pathlib 与传统 os.path 的区别
 
+[🔗 pathlib 官方文档](https://docs.python.org/3/library/pathlib.html){target="_blank" rel="noopener"}
+
 ## 为什么使用 pathlib?
 
 ```python

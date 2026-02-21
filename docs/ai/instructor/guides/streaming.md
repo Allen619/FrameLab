@@ -6,6 +6,8 @@
 
 Instructor 引入了 `Partial[T]` 类型，它将 Pydantic 模型的所有字段标记为可选（Optional）。这意味着你可以处理尚未完全填充的对象。
 
+[🔗 Instructor Partial Streaming 官方文档](https://python.useinstructor.com/concepts/partial/){target="_blank" rel="noopener"}
+
 ### 为什么需要 `Partial`？
 
 假设你有一个包含多个字段的 `User` 模型。LLM 是逐个 token 生成 JSON 的。

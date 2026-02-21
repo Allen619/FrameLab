@@ -18,6 +18,8 @@ description: 深入对比 Chroma、Pinecone、Milvus、Weaviate 四大向量数�
 
 ### 什么是向量数据库？
 
+[🔗 LlamaIndex 向量存储集成](https://docs.llamaindex.ai/en/stable/module_guides/storing/vector_stores/){target="_blank" rel="noopener"}
+
 **向量数据库** 就像**图书馆的智能检索系统**。
 
 想象你走进一个巨大的图书馆，想找一本"关于人工智能改变医疗行业"的书。传统方式是按书名或作者查找（关键词匹配），但这样可能错过很多相关内容。
@@ -126,6 +128,8 @@ graph TD
 ---
 
 ## Chroma 完整指南
+
+[🔗 Chroma Vector Store 集成文档](https://docs.llamaindex.ai/en/stable/examples/vector_stores/ChromaIndexDemo/){target="_blank" rel="noopener"}
 
 Chroma 是零基础学员的**最佳起点**。它具备以下优势：
 

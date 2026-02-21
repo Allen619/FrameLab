@@ -7,6 +7,8 @@ description: Python asyncio 完整指南,async/await 与 Promise/async-await 深
 
 Python 3.5+ 引入了 `async/await` 语法,提供原生异步编程支持,通过 `asyncio` 模块实现事件循环和协程,类似 JavaScript 的 Promise 和 async/await。
 
+[🔗 asyncio 官方文档](https://docs.python.org/3/library/asyncio.html){target="_blank" rel="noopener"}
+
 ## 什么是异步编程?
 
 ### 执行流程对比

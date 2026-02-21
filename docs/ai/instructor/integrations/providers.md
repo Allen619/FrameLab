@@ -2,6 +2,8 @@
 
 Instructor 不仅仅局限于 OpenAI。它支持所有主流的模型提供商，提供了统一的接口风格。
 
+[🔗 Instructor 集成文档](https://python.useinstructor.com/integrations/){target="_blank" rel="noopener"}
+
 ## Anthropic (Claude)
 
 要使用 Claude 模型（如 Claude 3 Opus, Sonnet, Haiku），你需要安装 `instructor[anthropic]`。

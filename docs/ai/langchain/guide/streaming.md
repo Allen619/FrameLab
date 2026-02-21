@@ -1,358 +1,425 @@
 ---
-title: Streaming 流式响应
-description: 学习如何使用 LangChain 1.0 的流式响应功能
+title: 流式响应 Streaming
+description: 掌握 LangChain 流式响应的三种模式（updates / messages / custom），学习多模式组合、前端集成、错误处理与取消机制
 ---
 
-# Streaming 流式响应
+# 流式响应 Streaming
 
-## 概述
+> 前置阅读：[模型调用 Models](/ai/langchain/guide/models) · [智能体 Agent](/ai/langchain/guide/agents)
 
-流式响应（Streaming）是 LangChain 1.0 的重要特性之一，它允许你在 LLM 生成内容时实时接收部分结果，而不是等待完整响应。这对于提升用户体验至关重要——用户可以看到 AI 正在"思考"和"打字"，而不是面对一个漫长的等待。
+## 为什么需要流式响应
 
-### 为什么需要流式响应？
+大语言模型的推理往往需要数秒甚至数十秒。非流式调用让用户面对空白等待，而流式响应通过**增量返回**部分结果，从根本上改善体验：
 
-1. **提升用户体验**：用户可以立即看到响应开始生成
-2. **减少感知延迟**：即使总耗时相同，流式显示让等待更容易接受
-3. **实时反馈**：工具执行过程中可以提供进度更新
-4. **资源优化**：可以在生成过程中取消不需要的请求
+| 维度 | 非流式 | 流式 |
+|------|--------|------|
+| 首字节延迟 | 等待全部生成完毕 | 首个 Token 即返回 |
+| 用户感知 | "系统卡死了？" | "AI 正在打字" |
+| 工具反馈 | 无中间状态 | 实时进度更新 |
+| 资源利用 | 必须等完成 | 可随时取消 |
 
-## 核心概念
+流式显示即使不减少实际响应时间，也能将**用户感知延迟降低 50% 以上**——我们习惯看到对方逐字回答，而不是沉默许久后突然出现一大段话。
 
-### agent.stream() 方法
+[🔗 LangChain Streaming 概念文档](https://python.langchain.com/docs/concepts/streaming/){target="_blank" rel="noopener"} · [🔗 LangGraph 流式 Token 指南](https://langchain-ai.github.io/langgraph/how-tos/streaming-tokens/){target="_blank" rel="noopener"}
 
-LangChain 1.0 的 `create_agent` 返回的 Agent 支持 `.stream()` 方法，提供三种流式模式：
+::: tip 前端类比
+流式响应对前端开发者并不陌生：
 
-| stream_mode  | 描述                   | 适用场景             |
-| ------------ | ---------------------- | -------------------- |
-| `"updates"`  | 获取每个步骤的完整更新 | 追踪 Agent 执行流程  |
-| `"messages"` | Token 级别流式输出     | 实时显示 AI 回复     |
-| `"custom"`   | 工具内部自定义更新     | 长时间工具的进度反馈 |
+- **SSE (Server-Sent Events)**：服务器单向推送数据流，LangChain 的 HTTP 流式通常通过 SSE 实现
+- **WebSocket**：双向实时通信，适合客户端需要中途发送取消指令的场景
+- **React Server Components Streaming**：Next.js RSC 逐步将 UI 片段送达客户端，与 LLM Token 流式输出理念一致——"准备好一部分就先发一部分"
+- **ReadableStream**：Web Streams API 的流式原语，`for await...of` 消费 ReadableStream 和 `agent.stream()` 体验完全一样
+:::
 
-### 流式 vs 非流式
-
-```python
-# 非流式调用 - 等待完整响应
-result = agent.invoke({"messages": [...]})
-
-# 流式调用 - 实时接收部分结果
-for chunk in agent.stream({"messages": [...]}, stream_mode="updates"):
-    print(chunk)
-```
-
-## 代码示例 1: 基础流式输出 (updates 模式)
-
-`updates` 模式返回 Agent 执行过程中每个步骤的完整状态更新：
-
-```python
-from langchain.agents import create_agent
-
-def get_weather(city: str) -> str:
-    """获取指定城市的天气信息"""
-    return f"今天{city}天气晴朗，气温 25°C"
-
-agent = create_agent(
-    model="claude-sonnet-4-5-20250929",
-    tools=[get_weather],
-    system_prompt="你是一个天气助手"
-)
-
-# 流式获取更新
-for chunk in agent.stream(
-    {"messages": [{"role": "user", "content": "北京天气怎么样？"}]},
-    stream_mode="updates",
-):
-    for step, data in chunk.items():
-        print(f"步骤: {step}")
-        print(f"内容: {data['messages'][-1].content_blocks}")
-        print("---")
-```
-
-**输出示例**:
-
-```
-步骤: model
-内容: [{'type': 'tool_call', 'name': 'get_weather', 'args': {'city': 'Beijing'}}]
----
-步骤: tools
-内容: [{'type': 'text', 'text': '今天北京天气晴朗，气温 25°C'}]
----
-步骤: model
-内容: [{'type': 'text', 'text': '北京今天天气很好，晴朗，气温 25°C，非常适合外出！'}]
----
-```
-
-**使用场景**：
-
-- 追踪 Agent 的决策过程
-- 调试工具调用
-- 显示执行进度
-
-## 代码示例 2: Token 级别流式 (messages 模式)
-
-`messages` 模式提供最细粒度的流式输出，每个 Token 都会触发一次更新：
-
-```python
-from langchain.agents import create_agent
-
-def search_database(query: str) -> str:
-    """搜索数据库"""
-    return f"找到关于 {query} 的 10 条记录"
-
-agent = create_agent(
-    model="claude-sonnet-4-5-20250929",
-    tools=[search_database],
-)
-
-# Token 级别流式输出
-for token, metadata in agent.stream(
-    {"messages": [{"role": "user", "content": "搜索用户信息"}]},
-    stream_mode="messages",
-):
-    node = metadata['langgraph_node']
-    content = token.content_blocks
-
-    if node == "model":
-        # 模型输出
-        for block in content:
-            if block.get("type") == "text":
-                print(block["text"], end="", flush=True)
-            elif block.get("type") == "tool_call_chunk":
-                print(f"\n[调用工具: {block.get('name', '')}]")
-    elif node == "tools":
-        # 工具输出
-        for block in content:
-            if block.get("type") == "text":
-                print(f"\n[工具结果: {block['text']}]")
-```
-
-**输出示例**:
-
-```
-[调用工具: search_database]
-[工具结果: 找到关于 用户信息 的 10 条记录]
-根据搜索结果，我找到了 10 条相关的用户信息记录...
-```
-
-**chunk 结构解析**:
-
-- `token`: 包含 `content_blocks` 列表
-- `metadata`: 包含 `langgraph_node` 标识当前节点
-
-## 代码示例 3: 自定义流式更新 (custom 模式)
-
-`custom` 模式允许工具函数内部发送自定义的流式更新，非常适合长时间运行的操作：
-
-```python
-from langchain.agents import create_agent
-from langgraph.config import get_stream_writer
-
-def analyze_large_dataset(dataset_name: str) -> str:
-    """分析大型数据集"""
-    writer = get_stream_writer()
-
-    # 发送自定义进度更新
-    writer(f"开始加载数据集: {dataset_name}")
-    # 模拟加载时间
-    writer("已加载 25% 数据...")
-    writer("已加载 50% 数据...")
-    writer("已加载 75% 数据...")
-    writer("数据加载完成，开始分析...")
-    writer("分析完成!")
-
-    return f"数据集 {dataset_name} 分析完成：共 10000 条记录，平均值 42.5"
-
-agent = create_agent(
-    model="claude-sonnet-4-5-20250929",
-    tools=[analyze_large_dataset],
-)
-
-# 接收自定义流式更新
-for chunk in agent.stream(
-    {"messages": [{"role": "user", "content": "分析销售数据集"}]},
-    stream_mode="custom"
-):
-    print(f"进度: {chunk}")
-```
-
-**输出示例**:
-
-```
-进度: 开始加载数据集: 销售数据
-进度: 已加载 25% 数据...
-进度: 已加载 50% 数据...
-进度: 已加载 75% 数据...
-进度: 数据加载完成，开始分析...
-进度: 分析完成!
-```
-
-### 多模式组合使用
-
-可以同时使用多种流式模式：
-
-```python
-for stream_mode, chunk in agent.stream(
-    {"messages": [{"role": "user", "content": "分析数据"}]},
-    stream_mode=["updates", "custom"]  # 组合多种模式
-):
-    print(f"模式: {stream_mode}")
-    print(f"内容: {chunk}")
-    print("---")
-```
-
-## 流式响应数据流
-
-下图展示了流式响应的完整处理流程:
+## 流式数据流全景
 
 ```mermaid
 sequenceDiagram
-    participant User as 用户
-    participant Agent as Agent
-    participant LLM as LLM
-    participant Tool as 工具
+    participant C as 客户端 (前端)
+    participant S as 服务端 (FastAPI)
+    participant A as LangChain Agent
+    participant M as LLM 模型
+    participant T as 工具函数
 
-    User->>Agent: 发送请求
-    Agent->>LLM: 调用模型
+    C->>S: HTTP 请求 (SSE)
+    S->>A: agent.stream(input, stream_mode)
+    A->>M: 发送 Prompt
 
-    loop stream_mode="messages"
-        LLM-->>Agent: Token chunk
-        Agent-->>User: 实时显示
-    end
-
-    alt 需要工具调用
-        Agent->>Tool: 执行工具
-
-        loop stream_mode="custom"
-            Tool-->>Agent: 进度更新
-            Agent-->>User: 显示进度
-        end
-
-        Tool-->>Agent: 工具结果
-        Agent->>LLM: 继续生成
-
-        loop stream_mode="messages"
-            LLM-->>Agent: Token chunk
-            Agent-->>User: 实时显示
+    rect rgb(232, 245, 233)
+        Note over M,C: messages 模式 — Token 级别
+        loop 每个 Token
+            M-->>A: Token chunk
+            A-->>S: yield (token, metadata)
+            S-->>C: SSE data: {token}
         end
     end
 
-    Agent-->>User: 完成
+    alt LLM 决定调用工具
+        rect rgb(255, 243, 224)
+            Note over A,T: updates 模式 — 步骤级别
+            A-->>S: yield {step: "agent", tool_call}
+            A->>T: 执行工具
+        end
+        rect rgb(227, 242, 253)
+            Note over T,C: custom 模式 — 自定义进度
+            T-->>A: writer("进度 50%")
+            A-->>S: yield custom_data
+            S-->>C: SSE data: {progress}
+        end
+        T-->>A: 工具结果
+        A->>M: 继续生成
+        loop 最终回复
+            M-->>A: Token chunk
+            A-->>S: yield token
+            S-->>C: SSE data: {token}
+        end
+    end
+
+    A-->>S: 流结束
+    S-->>C: SSE [DONE]
 ```
 
-## 最佳实践
+## 三种流式模式
 
-### 1. 选择合适的 stream_mode
+| stream_mode | 粒度 | 返回内容 | 场景 |
+|-------------|------|----------|------|
+| `"updates"` | 步骤级 | 节点执行后的完整状态 | 追踪 Agent 决策、调试 |
+| `"messages"` | Token 级 | 每个 Token 增量 | 聊天打字效果 |
+| `"custom"` | 自定义 | 工具内发出的任意数据 | 长任务进度条 |
+
+### updates — 步骤级别更新
+
+每个执行步骤完成后返回一次，包含该步骤的完整输出：
 
 ```python
-# 场景 1: 实时显示 AI 回复 → messages
-stream_mode="messages"
+from langchain.chat_models import init_chat_model
+from langgraph.prebuilt import create_react_agent
 
-# 场景 2: 追踪执行流程 → updates
-stream_mode="updates"
+def get_weather(city: str) -> str:
+    """获取天气"""
+    return f"{city}：晴，25°C"
 
-# 场景 3: 工具进度反馈 → custom
-stream_mode="custom"
+model = init_chat_model("openai:gpt-4o")
+agent = create_react_agent(model, tools=[get_weather])
 
-# 场景 4: 综合需求 → 组合模式
-stream_mode=["updates", "custom"]
+for chunk in agent.stream(
+    {"messages": [{"role": "user", "content": "北京天气如何？"}]},
+    stream_mode="updates",
+):
+    for node_name, node_output in chunk.items():
+        last_msg = node_output["messages"][-1]
+        if hasattr(last_msg, "tool_calls") and last_msg.tool_calls:
+            for tc in last_msg.tool_calls:
+                print(f"[{node_name}] 调用工具: {tc['name']}({tc['args']})")
+        elif hasattr(last_msg, "content"):
+            print(f"[{node_name}] {last_msg.content[:80]}")
 ```
 
-### 2. 错误处理
+输出：
 
-```python
-try:
-    for chunk in agent.stream(
-        {"messages": [{"role": "user", "content": query}]},
-        stream_mode="messages",
-    ):
-        process_chunk(chunk)
-except Exception as e:
-    print(f"流式处理中断: {e}")
-    # 可以选择回退到非流式调用
-    result = agent.invoke({"messages": [{"role": "user", "content": query}]})
+```
+[agent] 调用工具: get_weather({'city': '北京'})
+[tools] 北京：晴，25°C
+[agent] 北京今天天气很好！晴朗，气温 25°C，非常适合外出。
 ```
 
-### 3. 前端集成模式
+### messages — Token 级别流式
 
-使用 Server-Sent Events (SSE) 将流式响应传递到前端:
+最细粒度——每个 Token 生成后立即返回，实现"打字机效果"：
 
 ```python
+for event in agent.stream(
+    {"messages": [{"role": "user", "content": "搜索活跃用户"}]},
+    stream_mode="messages",
+):
+    msg_chunk, metadata = event  # 元组：(消息片段, 元数据)
+    node = metadata.get("langgraph_node", "")
+
+    if node == "agent" and msg_chunk.content:
+        print(msg_chunk.content, end="", flush=True)  # 逐字输出
+
+    if node == "agent" and msg_chunk.tool_call_chunks:
+        for tc in msg_chunk.tool_call_chunks:
+            if tc.get("name"):
+                print(f"\n[调用: {tc['name']}]")
+
+    if node == "tools" and msg_chunk.content:
+        print(f"\n[结果: {msg_chunk.content}]")
+```
+
+关键数据结构：
+
+```python
+msg_chunk.content            # str — 文本片段
+msg_chunk.tool_call_chunks   # list — 工具调用增量
+metadata["langgraph_node"]   # "agent" | "tools"
+metadata["langgraph_step"]   # int — 步骤序号
+```
+
+### custom — 自定义流式更新
+
+工具函数内部通过 `get_stream_writer()` 发送任意数据，适合长时间操作的进度反馈：
+
+```python
+import time
+from langgraph.config import get_stream_writer
+
+def analyze_dataset(name: str) -> str:
+    """分析数据集，过程中报告进度"""
+    writer = get_stream_writer()
+
+    for pct in [0, 25, 50, 75, 100]:
+        writer({"phase": "loading", "progress": pct})
+        time.sleep(0.3)
+
+    writer({"phase": "analyzing", "progress": 100, "message": "分析完成"})
+    return f"{name} 分析结果：50,000 条记录，日活 12,350"
+
+agent = create_react_agent(model, tools=[analyze_dataset])
+
+for chunk in agent.stream(
+    {"messages": [{"role": "user", "content": "分析用户数据"}]},
+    stream_mode="custom",
+):
+    if isinstance(chunk, dict):
+        print(f"[{chunk.get('phase')}] {chunk.get('progress', 0)}%")
+```
+
+`get_stream_writer()` 要点：必须在工具函数**内部**调用；写入任意可序列化对象；仅 `stream_mode` 含 `"custom"` 时才被消费。
+
+## 多模式组合
+
+将 `stream_mode` 设为列表即可同时获取多种粒度的数据：
+
+```python
+for mode, chunk in agent.stream(
+    {"messages": [{"role": "user", "content": "生成运营报告"}]},
+    stream_mode=["messages", "custom"],
+):
+    if mode == "messages":
+        msg_chunk, metadata = chunk
+        if metadata.get("langgraph_node") == "agent" and msg_chunk.content:
+            print(msg_chunk.content, end="", flush=True)
+    elif mode == "custom":
+        print(f"\n[进度] {chunk}")
+```
+
+每次迭代返回 `(mode, chunk)` 元组——通过 `mode` 区分数据来源，`chunk` 结构取决于对应模式。
+
+::: warning 注意
+组合模式下不同模式的数据会**交织**出现。务必通过 `mode` 字段区分处理。
+:::
+
+## 前端集成模式
+
+### SSE + FastAPI（推荐）
+
+```python
+# server.py
+import json
 from fastapi import FastAPI
 from fastapi.responses import StreamingResponse
 
 app = FastAPI()
 
-async def stream_generator(query: str):
-    for chunk in agent.stream(
+async def event_generator(query: str):
+    for event in agent.stream(
         {"messages": [{"role": "user", "content": query}]},
         stream_mode="messages",
     ):
-        # 将 chunk 序列化为 SSE 格式
-        yield f"data: {json.dumps(chunk)}\n\n"
+        msg_chunk, metadata = event
+        node = metadata.get("langgraph_node", "")
+        if node == "agent" and msg_chunk.content:
+            yield f"data: {json.dumps({'type': 'token', 'content': msg_chunk.content}, ensure_ascii=False)}\n\n"
     yield "data: [DONE]\n\n"
 
-@app.get("/stream")
-async def stream_endpoint(query: str):
-    return StreamingResponse(
-        stream_generator(query),
-        media_type="text/event-stream"
-    )
+@app.get("/api/chat/stream")
+async def stream_chat(query: str):
+    return StreamingResponse(event_generator(query), media_type="text/event-stream",
+        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"})
+```
+
+```typescript
+// React 前端
+function useChatStream(query: string) {
+  const [text, setText] = useState('')
+
+  const start = useCallback(() => {
+    const es = new EventSource(`/api/chat/stream?query=${encodeURIComponent(query)}`)
+    es.onmessage = (e) => {
+      if (e.data === '[DONE]') return es.close()
+      const d = JSON.parse(e.data)
+      if (d.type === 'token') setText((p) => p + d.content)
+    }
+    es.onerror = () => es.close()
+    return () => es.close()
+  }, [query])
+
+  return { text, start }
+}
+```
+
+### React useStream Hook（@langchain/sdk）
+
+LangChain 官方封装，自动处理连接管理和消息状态：
+
+```typescript
+import { useStream } from '@langchain/sdk/react'
+
+function Chat() {
+  const { messages, start, stop, isStreaming } = useStream({
+    apiUrl: 'http://localhost:8000',
+    assistantId: 'my-agent',
+    messagesKey: 'messages',
+  })
+
+  return (
+    <div>
+      {messages.map((m, i) => <div key={i}>{m.content}</div>)}
+      {isStreaming && <span>AI 正在输入...</span>}
+      <button onClick={stop}>停止</button>
+    </div>
+  )
+}
+```
+
+优势：自动 SSE 重连、内置状态管理、`stop()` 取消、与 LangGraph Platform 无缝集成。
+
+### WebSocket 方案
+
+需要双向通信（如客户端实时取消）时使用：
+
+```python
+from fastapi import WebSocket
+
+@app.websocket("/ws/chat")
+async def ws_chat(ws: WebSocket):
+    await ws.accept()
+    try:
+        while True:
+            data = await ws.receive_json()
+            if data.get("type") == "cancel":
+                break
+            for event in agent.stream(
+                {"messages": [{"role": "user", "content": data["content"]}]},
+                stream_mode="messages",
+            ):
+                msg_chunk, meta = event
+                if meta.get("langgraph_node") == "agent" and msg_chunk.content:
+                    await ws.send_json({"type": "token", "content": msg_chunk.content})
+            await ws.send_json({"type": "done"})
+    finally:
+        await ws.close()
+```
+
+## 错误处理
+
+流式响应中错误可能在任意位置发生，需要专门的处理策略：
+
+```python
+import time
+
+def stream_with_retry(agent, query: str, max_retries: int = 3):
+    """带指数退避重试 + 非流式回退"""
+    for attempt in range(max_retries):
+        try:
+            for chunk in agent.stream(
+                {"messages": [{"role": "user", "content": query}]},
+                stream_mode="messages",
+            ):
+                yield chunk
+            return  # 成功完成
+        except (ConnectionError, TimeoutError) as e:
+            wait = 2 ** attempt
+            print(f"第 {attempt + 1} 次失败，{wait}s 后重试: {e}")
+            time.sleep(wait)
+
+    # 重试耗尽，回退到非流式
+    result = agent.invoke({"messages": [{"role": "user", "content": query}]})
+    yield result
+```
+
+SSE 场景下将错误传播到前端：
+
+```python
+async def safe_event_generator(query: str):
+    try:
+        for event in agent.stream(..., stream_mode="messages"):
+            msg_chunk, metadata = event
+            if metadata.get("langgraph_node") == "agent" and msg_chunk.content:
+                yield f"data: {json.dumps({'type': 'token', 'content': msg_chunk.content}, ensure_ascii=False)}\n\n"
+    except Exception as e:
+        yield f"data: {json.dumps({'type': 'error', 'message': str(e)}, ensure_ascii=False)}\n\n"
+    finally:
+        yield "data: [DONE]\n\n"
+```
+
+## 流式取消
+
+### Python 端：break 即取消
+
+```python
+for chunk in agent.stream(..., stream_mode="messages"):
+    msg_chunk, metadata = chunk
+    if metadata.get("langgraph_node") == "agent" and msg_chunk.content:
+        print(msg_chunk.content, end="", flush=True)
+    if should_cancel():
+        break  # 跳出循环即停止消费
+```
+
+### 前端：AbortController
+
+```typescript
+const controller = new AbortController()
+
+// 启动流式
+fetch(`/api/chat/stream?query=${query}`, { signal: controller.signal })
+  .then(async (res) => {
+    const reader = res.body!.getReader()
+    while (true) {
+      const { done, value } = await reader.read()
+      if (done) break
+      processChunk(new TextDecoder().decode(value))
+    }
+  })
+  .catch((err) => {
+    if (err.name === 'AbortError') console.log('已取消')
+  })
+
+// 取消
+controller.abort()
 ```
 
 ## 常见问题
 
-**Q: 流式响应会影响性能吗？**
+**Q：流式和非流式的总耗时有区别吗？**
 
-A: 流式响应本身不会增加总耗时。实际上，由于可以更早开始处理结果，整体感知性能更好。但需要注意：
+没有。LLM 推理时间相同，流式只是把"等完再返回"改为"生成一部分就返回一部分"。
 
-- 每个 chunk 都需要序列化和传输
-- 前端需要处理增量更新
-- 网络不稳定时可能需要重连机制
+**Q：三种模式怎么选？**
 
-**Q: 如何处理流式中断？**
+- 聊天打字效果 → `messages`
+- 执行步骤可视化 → `updates`
+- 工具进度条 → `custom`
+- 综合需求 → `["messages", "custom"]`
 
-A: 建议实现重试和回退机制：
+**Q：前端选 SSE 还是 WebSocket？**
 
-```python
-max_retries = 3
-for attempt in range(max_retries):
-    try:
-        for chunk in agent.stream(...):
-            yield chunk
-        break
-    except ConnectionError:
-        if attempt == max_retries - 1:
-            # 回退到非流式
-            result = agent.invoke(...)
-            yield result
-```
+大多数场景选 SSE——实现简单、HTTP 兼容、自动重连。只有需要客户端**主动发数据**（如实时取消、追加上下文）时才用 WebSocket。
 
-**Q: 如何在 Web 应用中使用流式响应？**
+**Q：`get_stream_writer()` 可以在工具外使用吗？**
 
-A: 推荐使用 Server-Sent Events (SSE) 或 WebSocket：
-
-- **SSE**: 适合单向流式（服务器→客户端），实现简单
-- **WebSocket**: 适合双向通信，功能更强大
-
-**Q: 流式响应可以取消吗？**
-
-A: 可以。在迭代过程中随时可以停止：
-
-```python
-for chunk in agent.stream(...):
-    if should_cancel:
-        break  # 停止流式处理
-    process_chunk(chunk)
-```
+不可以。它依赖 LangGraph 运行时上下文，仅在工具函数执行期间可用。
 
 ## 下一步
 
-现在你已经掌握了流式响应的使用，接下来可以：
-
-- 学习 [LangGraph 工作流](/ai/langchain/guide/langgraph-intro) - 构建复杂的 Agent 工作流
-- 探索 [生产部署](/ai/langchain/guide/deployment) - 将流式 Agent 部署到生产环境
+- [智能体 Agent](/ai/langchain/guide/agents) — Agent 如何调度工具与模型
+- [模型调用 Models](/ai/langchain/guide/models) — 不同模型对流式的支持差异
+- [生产部署](/ai/langchain/guide/deployment) — 流式 Agent 的生产环境部署
 
 ## 参考资源
 
-- [LangChain Streaming 官方文档](https://docs.langchain.com/oss/python/langchain/streaming)
-- [LangGraph 流式配置](https://docs.langchain.com/oss/python/langgraph/streaming)
-- [Server-Sent Events 规范](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events)
+- [LangChain Streaming 官方文档](https://python.langchain.com/docs/concepts/streaming/)
+- [LangGraph 流式配置](https://langchain-ai.github.io/langgraph/how-tos/streaming-tokens/)
+- [Server-Sent Events MDN 文档](https://developer.mozilla.org/zh-CN/docs/Web/API/Server-sent_events)
+- [useStream React Hook](https://langchain-ai.github.io/langgraphjs/reference/functions/langgraph_sdk_react.useStream.html)

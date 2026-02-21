@@ -6,6 +6,8 @@
 
 在 Instructor 中，Pydantic 模型扮演着 schema 定义和数据验证的双重角色。对于前端开发者来说，可以将其理解为 **TypeScript Interface + Zod Runtime Validation** 的结合体。
 
+[🔗 Pydantic BaseModel 官方文档](https://docs.pydantic.dev/latest/concepts/models/){target="_blank" rel="noopener"} | [🔗 Instructor 验证机制](https://python.useinstructor.com/concepts/validation/){target="_blank" rel="noopener"}
+
 ### 对比：Pydantic vs TS/Zod
 
 ::: code-group

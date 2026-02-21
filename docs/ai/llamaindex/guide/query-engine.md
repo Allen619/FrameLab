@@ -18,6 +18,8 @@ description: 掌握 LlamaIndex 的 Query Engine 调优技巧，提升检索精�
 
 ### 什么是 Query Engine？
 
+[🔗 Query Engine 官方文档](https://docs.llamaindex.ai/en/stable/module_guides/deploying/query_engine/){target="_blank" rel="noopener"}
+
 **Query Engine** 就像一个**智能问答助手**。当你提出问题时，助手会：
 
 1. 理解你的问题
@@ -90,6 +92,8 @@ print(response)
 **说明**: `similarity_top_k` 控制检索数量，太小可能遗漏信息，太大可能引入噪音。
 
 ## Response Mode 详解
+
+[🔗 Response Synthesizer 模式详解](https://docs.llamaindex.ai/en/stable/module_guides/deploying/query_engine/response_modes/){target="_blank" rel="noopener"}
 
 ### 响应模式对比
 

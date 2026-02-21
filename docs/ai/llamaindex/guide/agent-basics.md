@@ -18,6 +18,8 @@ description: 学习如何使用 LlamaIndex 构建能自主思考和行动的 AI 
 
 ### 什么是 Agent？
 
+[🔗 LlamaIndex Agent 官方文档](https://docs.llamaindex.ai/en/stable/module_guides/deploying/agents/){target="_blank" rel="noopener"}
+
 **Agent**（智能代理）就像一个**能自主思考和行动的 AI 助手**。
 
 想象你有一个聪明的私人助理：当你说"帮我查一下明天北京的天气，然后推荐合适的穿搭"，这个助理会：
@@ -53,6 +55,8 @@ graph TD
 **说明**：Agent 在每个循环中先思考（Thought），决定是否需要调用工具（Action），然后观察结果（Observation），直到能够给出最终答案。
 
 ### 什么是 Tool？
+
+[🔗 Tool 抽象与内置工具](https://docs.llamaindex.ai/en/stable/module_guides/deploying/agents/tools/){target="_blank" rel="noopener"}
 
 **Tool**（工具）就像**Agent 工具箱里的工具**。
 

@@ -7,6 +7,8 @@ description: 深入理解 Deployment 的工作原理，学习声明式应用管�
 
 **Deployment**（部署）是 Kubernetes 中最常用的工作负载资源，用于声明式地管理 Pod 和 ReplicaSet。
 
+[🔗 Kubernetes 官方文档 - Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/){target="_blank" rel="noopener"}
+
 ## 前置知识
 
 > 💡 阅读本章前，请确保已完成：
