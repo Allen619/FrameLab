@@ -20,8 +20,10 @@ export default withMermaid(
           items: [
             { text: 'LangChain', link: '/ai/langchain/' },
             { text: 'LangGraph', link: '/ai/langgraph/' },
+            { text: 'CrewAI', link: '/ai/crewai/' },
             { text: 'LlamaIndex', link: '/ai/llamaindex/' },
             { text: 'Instructor', link: '/ai/instructor/' },
+            { text: 'Vercel AI SDK', link: '/ai/vercel-ai-sdk/' },
           ],
         },
         {
@@ -633,6 +635,59 @@ export default withMermaid(
           },
         ],
 
+        '/ai/crewai/': [
+          {
+            text: '入门篇',
+            items: [
+              { text: '⭐ 概览', link: '/ai/crewai/guide/overview' },
+              { text: '安装与环境配置', link: '/ai/crewai/guide/install' },
+              { text: '⭐ 快速上手 Crew', link: '/ai/crewai/guide/quickstart-crew' },
+              { text: '⭐ 快速上手 Flow', link: '/ai/crewai/guide/quickstart-flow' },
+            ],
+          },
+          {
+            text: '核心概念篇',
+            items: [
+              { text: '🔥 Agents 智能体', link: '/ai/crewai/guide/agents' },
+              { text: '🔥 Tasks 任务', link: '/ai/crewai/guide/tasks' },
+              { text: '🔥 Crews 团队编排', link: '/ai/crewai/guide/crews' },
+              { text: '⭐ Flows 工作流', link: '/ai/crewai/guide/flows' },
+              { text: 'Processes 执行流程', link: '/ai/crewai/guide/processes' },
+              { text: '🔥 Tools 工具系统', link: '/ai/crewai/guide/tools' },
+              { text: 'LLMs 模型配置', link: '/ai/crewai/guide/llms' },
+            ],
+          },
+          {
+            text: '高级能力篇',
+            collapsed: true,
+            items: [
+              { text: '⭐ Memory 记忆系统', link: '/ai/crewai/guide/memory' },
+              { text: 'Knowledge 知识库', link: '/ai/crewai/guide/knowledge' },
+              { text: 'Collaboration 协作与委托', link: '/ai/crewai/guide/collaboration' },
+              { text: 'Planning & Reasoning', link: '/ai/crewai/guide/planning-reasoning' },
+              { text: 'Guardrails 任务守卫', link: '/ai/crewai/guide/guardrails' },
+            ],
+          },
+          {
+            text: '工程化篇',
+            collapsed: true,
+            items: [
+              { text: '⭐ 生产架构', link: '/ai/crewai/guide/production-architecture' },
+              { text: 'MCP 集成', link: '/ai/crewai/guide/mcp-integration' },
+              { text: '可观测性与调试', link: '/ai/crewai/guide/observability' },
+              { text: 'CLI 与项目管理', link: '/ai/crewai/guide/cli' },
+            ],
+          },
+          {
+            text: '实战篇',
+            collapsed: true,
+            items: [
+              { text: '🔥 研究分析 Crew', link: '/ai/crewai/guide/tutorial-research-crew' },
+              { text: '多步骤 Flow 工作流', link: '/ai/crewai/guide/tutorial-flow-workflow' },
+            ],
+          },
+        ],
+
         '/ai/llamaindex/': [
           {
             text: '基础',
@@ -697,6 +752,71 @@ export default withMermaid(
               { text: '⭐ 文本分类', link: '/ai/instructor/cookbook/classification' },
               { text: '复杂实体提取', link: '/ai/instructor/cookbook/extraction' },
               { text: 'RAG 增强', link: '/ai/instructor/cookbook/rag' },
+            ],
+          },
+        ],
+
+        '/ai/vercel-ai-sdk/': [
+          {
+            text: '入门篇',
+            items: [
+              { text: '⭐ 概览', link: '/ai/vercel-ai-sdk/guide/overview' },
+              { text: '安装与配置', link: '/ai/vercel-ai-sdk/guide/install' },
+              { text: '🔥 快速上手', link: '/ai/vercel-ai-sdk/guide/quickstart' },
+              { text: '⭐ 基础概念', link: '/ai/vercel-ai-sdk/guide/foundations' },
+            ],
+          },
+          {
+            text: '核心 API 篇',
+            items: [
+              { text: '🔥 文本生成', link: '/ai/vercel-ai-sdk/guide/generating-text' },
+              { text: '⭐ 结构化输出', link: '/ai/vercel-ai-sdk/guide/structured-output' },
+              { text: '🔥 工具调用', link: '/ai/vercel-ai-sdk/guide/tool-calling' },
+              { text: 'MCP 工具集成', link: '/ai/vercel-ai-sdk/guide/mcp' },
+              { text: '向量嵌入', link: '/ai/vercel-ai-sdk/guide/embeddings' },
+              { text: '多模态', link: '/ai/vercel-ai-sdk/guide/multimodal' },
+            ],
+          },
+          {
+            text: '前端集成篇',
+            items: [
+              { text: '⭐ UI 集成概览', link: '/ai/vercel-ai-sdk/guide/ui-overview' },
+              { text: '🔥 聊天机器人开发', link: '/ai/vercel-ai-sdk/guide/chatbot' },
+              { text: '聊天进阶', link: '/ai/vercel-ai-sdk/guide/chatbot-advanced' },
+              { text: '⭐ 生成式 UI', link: '/ai/vercel-ai-sdk/guide/generative-ui' },
+              { text: '流式自定义数据', link: '/ai/vercel-ai-sdk/guide/streaming-data' },
+              { text: '流协议详解', link: '/ai/vercel-ai-sdk/guide/stream-protocol' },
+            ],
+          },
+          {
+            text: 'Agent 篇',
+            items: [
+              { text: '⭐ Agent 概览', link: '/ai/vercel-ai-sdk/guide/agent-overview' },
+              { text: '🔥 构建 Agent', link: '/ai/vercel-ai-sdk/guide/building-agents' },
+              { text: '工作流模式', link: '/ai/vercel-ai-sdk/guide/workflow-patterns' },
+              { text: 'Agent 进阶', link: '/ai/vercel-ai-sdk/guide/agent-advanced' },
+            ],
+          },
+          {
+            text: '进阶篇',
+            collapsed: true,
+            items: [
+              { text: '⭐ Provider 选型指南', link: '/ai/vercel-ai-sdk/guide/providers' },
+              { text: '中间件系统', link: '/ai/vercel-ai-sdk/guide/middleware' },
+              { text: '缓存与速率限制', link: '/ai/vercel-ai-sdk/guide/caching-and-limits' },
+              { text: '错误处理与测试', link: '/ai/vercel-ai-sdk/guide/error-handling' },
+              { text: '部署指南', link: '/ai/vercel-ai-sdk/guide/deployment' },
+            ],
+          },
+          {
+            text: '实战教程篇',
+            collapsed: true,
+            items: [
+              { text: '🔥 实战：RAG Agent', link: '/ai/vercel-ai-sdk/guide/tutorial-rag-agent' },
+              {
+                text: '实战：多模态聊天',
+                link: '/ai/vercel-ai-sdk/guide/tutorial-multimodal-chat',
+              },
             ],
           },
         ],

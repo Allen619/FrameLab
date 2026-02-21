@@ -44,6 +44,18 @@ The 7 APScheduler sub-pages that expand on the main `apscheduler.md` entry SHALL
 - **WHEN** `apscheduler-overview.md`, `apscheduler-quickstart.md`, `apscheduler-core-concepts.md`, `apscheduler-triggers.md`, `apscheduler-job-stores.md`, `apscheduler-executors.md`, `apscheduler-troubleshooting-best-practices.md` exist under `third-party/scheduling/`
 - **THEN** they SHALL be listed in the sidebar under a scheduling sub-group OR linked from the parent `apscheduler.md` page
 
+### Requirement: Navigation covers all content sections
+
+系统 SHALL 确保 docs/.vitepress/config.mts 的 nav 和 sidebar 配置覆盖所有内容板块，包括新增的 CrewAI 板块。AI 下拉菜单 MUST 包含 LangChain、LangGraph、LlamaIndex、Instructor、CrewAI 五个入口。`/ai/crewai/` 路径 MUST 有对应的侧边栏配置。
+
+#### Scenario: CrewAI 路由可达性验证
+- **WHEN** VitePress 构建完成
+- **THEN** 所有 CrewAI 页面路由在 nav 和 sidebar 中可达，无断链
+
+#### Scenario: AI 板块首页完整性
+- **WHEN** 用户访问 AI 板块首页
+- **THEN** 页面的 hero actions 和 features 卡片覆盖全部五个 AI 框架
+
 ### Requirement: Sidebar configuration SHALL match file system
 
 After all changes, running a consistency check between the sidebar configuration paths and actual file system SHALL produce zero mismatches (no broken links, no missing entries for substantive content files).
